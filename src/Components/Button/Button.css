@@ -1,0 +1,8 @@
+.c-button {
+  height: 4rem;
+  border: none;
+  background: var(--site-tertiary);
+  color: var(--white);
+  font-size: var(--large);
+  font-weight: bold;
+}

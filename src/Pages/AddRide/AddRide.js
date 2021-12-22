@@ -5,6 +5,7 @@ import "./AddRide.css";
 const AddRide = () => {
   const location = useLocation();
   const coaster = location.state.coaster;
+
   const [ride, setRide] = useState({
     coasterId: coaster._id,
     coasterName: coaster.title,

@@ -41,3 +41,19 @@ ul a {
   text-decoration: none;
   color: #000;
 }
+
+/* variables */
+:root {
+  /* colors */
+  --site-primary: #C16E70;
+  --site-secondary: #DC9E82;
+  --site-tertiary: #151E3F;
+  --white: #fff;
+
+  /* font sizes */
+  --x-small: 14px;
+  --small: 16px;
+  --medium: 20px;
+  --large: 24px;
+  --jumbo: 100px;
+}

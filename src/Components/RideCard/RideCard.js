@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
 import "./RideCard.css";
 
 const RideCard = props => {

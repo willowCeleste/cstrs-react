@@ -29,6 +29,7 @@ const Credits = () => {
   }, [fetchCreditsHandler])
   return loading ? <Loading /> : (
     <div>
+      <h2>Credits</h2>
       <p className="c-credits__progress-message">You've got {credits.length} credits! Just {50 - credits.length} more until 50!</p>
       <ProgressBar max="50" progress={credits.length}></ProgressBar>
       <ul>
