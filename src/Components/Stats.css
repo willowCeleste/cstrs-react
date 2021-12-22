@@ -1,0 +1,14 @@
+.c-stats__container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.c-stats__list {
+  width: 50%;
+  padding: 0;
+}
+
+.c-stats__list-item--ordered {
+  display: flex;
+  justify-content: space-between;
+}

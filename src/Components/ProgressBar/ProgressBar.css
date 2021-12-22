@@ -1,0 +1,12 @@
+.c-progress-bar {
+  width: 100%;
+  height: 1rem;
+  margin-bottom: 2rem;
+  background-color: lightgray;
+}
+
+.c-progress-bar__inner {
+  height: 1rem;
+  background-color: #DC9E82;
+  transition: all 1.5s ease-in-out;
+}

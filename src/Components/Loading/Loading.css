@@ -1,0 +1,23 @@
+.c-loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 8rem;
+  width: 100%;
+}
+
+.c-loading__icon {
+  margin-bottom: 1rem;
+  font-size: 100px;
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(-359deg);
+  }
+}

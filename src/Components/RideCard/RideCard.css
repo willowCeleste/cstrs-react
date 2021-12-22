@@ -1,0 +1,41 @@
+.c-ride-card {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.c-ride-card a {
+  text-decoration: none;
+  color: black;
+}
+
+.c-ride-card__details {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+}
+
+.c-ride-card__date {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 0.5rem;
+}
+
+.c-ride-card__title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: normal;
+  margin-bottom: 0.1rem;
+}
+
+.c-ride-card__park {
+  margin: 0;
+  font-size: 16px;
+  font-weight: normal;
+  color: grey;
+}
+
+.c-ride-card__thumbnail {
+  height: 5rem;
+  width: 5rem;
+  object-fit: cover;
+}

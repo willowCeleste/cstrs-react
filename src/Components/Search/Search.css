@@ -1,0 +1,23 @@
+.c-search {
+  /* height: 3.5rem; */
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid;
+  border-color: #151E3F;
+}
+
+.c-search__text-input {
+  font-size: 24px;
+  border: none;
+  outline: none;
+}
+
+.c-search__submit {
+  border: none;
+  background: none;
+}
+
+.c-search__submit svg {
+  width: 1.5rem;
+  height: 1.5rem;
+} 

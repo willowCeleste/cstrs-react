@@ -1,0 +1,14 @@
+.c-rides__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.c-rides__list-item {
+  margin-bottom: 1rem;
+}
+
+.c-rides__card-link {
+  color: black;
+  text-decoration: none;
+}
