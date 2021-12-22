@@ -1,0 +1,28 @@
+.c-list-swipe-action {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.c-list-swipe-action--red {
+  background: red;
+  color: #fff;
+}
+
+.c-list-swipe-action--blue {
+  background: blue;
+  color: #fff;
+}
+
+.c-list-swipe-action--left {
+  justify-content: flex-start;
+  padding-left: 1rem;
+}
+
+.c-list-swipe-action--right {
+  justify-content: flex-end;
+  padding-right: 1rem;
+}

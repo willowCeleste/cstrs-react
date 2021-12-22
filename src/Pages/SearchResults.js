@@ -1,18 +1,15 @@
 import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
 import RideCard from "../Components/RideCard/RideCard";
 
 const SearchResults = props => {
   const { state } = useLocation();
   
   const renderResults = () => {
-    if (state.length) {
+    if (state.results.length) {
       return <ul>
-        { state.map(result => {
+        { state.results.map(result => {
           return <li key={result._id}>
-            <Link to={`/coaster/${result._id}`}>
-              <RideCard key={result._id} coaster={result.title} park={result._park[0].title} />
-            </Link>
+            <RideCard  key={result._id} coaster={result.title} park={result._park[0].title} />
           </li>
         }) }
       </ul>
@@ -20,6 +17,7 @@ const SearchResults = props => {
   };
 
   return <div>
+    <h2>Search results for "{state.searchTerm}"</h2>
     { renderResults() }
   </div>;
 };
