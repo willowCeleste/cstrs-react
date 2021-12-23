@@ -10,14 +10,15 @@ import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 
-const Rides = () => {
+const Rides = props => {
+  const userId = props.user._id;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [rides, setRides] = useState([]);
   
   const fetchRidesHandler = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:4000/rides/');
+      const response = await fetch(`http://localhost:4000/users/${userId}/rides/`);
       if (!response.ok) {
         throw new Error('Something went wrong!');
       }
@@ -27,7 +28,7 @@ const Rides = () => {
     } catch(e) {
       console.log(e);
     }
-  }, []);
+  }, [userId]);
 
   const deleteRideHandler = () => {
     alert("Are you sure you want to delete this ride?");

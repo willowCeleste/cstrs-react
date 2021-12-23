@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation } from "react-router";
 import "./AddRide.css";
 
-const AddRide = () => {
+const AddRide = props => {
   const location = useLocation();
   const coaster = location.state.coaster;
 
@@ -11,7 +11,7 @@ const AddRide = () => {
     coasterName: coaster.title,
     parkId: coaster._park[0]._id,
     parkName: coaster._park[0].title,
-    user: '60f57b4d7104b26ef6ec7a0e', //TODO: remove hardcoded user
+    user: props.user._id,
     date: '',
     notes: '',
     rating: null

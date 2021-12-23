@@ -13,6 +13,13 @@ import RideDetail from './Pages/RideDetail/RideDetail';
 import './App.css';
 
 function App() {
+  const user =  {
+    _id: '60f57b4d7104b26ef6ec7a0e',
+    username: 'willowceleste',
+    firstName: 'Willow',
+    lastName: 'Brazuk'
+  };
+
   return (
     <div className="c-app">
       <Header />
@@ -20,14 +27,14 @@ function App() {
         <Routes>
           <Route path
           ="/coaster/:id" element={<CoasterDetail />}/>
-          <Route path="/rides" element={<Rides />}/>
+          <Route path="/rides" element={<Rides user={user} />}/>
           <Route path="/credits" element={<Credits />}/>
           <Route path="/search" element={<SearchResults />}/>
           <Route path="/lists" element={<Lists />}/>
-          <Route path="/addRide" element={<AddRide />}/>
+          <Route path="/addRide" element={<AddRide user={user} />}/>
           <Route path="/edit-ride" element={<EditRide />}/>
           <Route path="/rides/:id" element={<RideDetail />}/>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home user={user} />} />
         </Routes>
       </div>
     </div>

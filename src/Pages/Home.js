@@ -1,6 +1,7 @@
-const Home = () => {
+const Home = props => {
+  console.log(props.user);
   return <div>
-    Home!
+    <h2>Hello {props.user.firstName}!</h2>
   </div>
 };
 
