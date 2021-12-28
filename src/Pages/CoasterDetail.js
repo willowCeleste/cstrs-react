@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from 'react';
 
-const CoasterDetail = props => {
+const CoasterDetail = () => {
   const { id } = useParams();
   const [coaster, setCoaster] = useState(null);
 

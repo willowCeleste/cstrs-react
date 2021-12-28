@@ -4,7 +4,7 @@ import "./AddRide.css";
 
 const AddRide = props => {
   const location = useLocation();
-  const coaster = location.state.coaster;
+  const coaster = location.state.coaster ? location.state.coaster : null;
 
   const [ride, setRide] = useState({
     coasterId: coaster._id,

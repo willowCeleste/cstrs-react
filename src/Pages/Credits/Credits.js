@@ -11,7 +11,7 @@ const Credits = () => {
   const fetchCreditsHandler = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:4000/rides/credits');
-      console.log(response);
+
       if (!response.ok) {
         throw new Error('Something went wrong!');
       }

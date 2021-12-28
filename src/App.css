@@ -51,6 +51,7 @@ ul a {
   --white: #fff;
 
   /* font sizes */
+  --xx-small: 12px;
   --x-small: 14px;
   --small: 16px;
   --medium: 20px;

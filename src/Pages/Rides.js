@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from "react-router-dom";
 import ListSwipeAction from '../Components/ListSwipeAction/ListSwipeAction';
 import RideCard from '../Components/RideCard/RideCard';
+import ConfirmAlert from '../Components/ConfirmAlert/ConfirmAlert';
 import { SwipeableList, SwipeableListItem } from '@sandstreamdev/react-swipeable-list';
 import '@sandstreamdev/react-swipeable-list/dist/styles.css';
 import "./Rides.css";
@@ -11,10 +12,10 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 
 const Rides = props => {
-  const userId = props.user._id;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [rides, setRides] = useState([]);
+  const userId = props.user._id;
   
   const fetchRidesHandler = useCallback(async () => {
     try {
@@ -30,8 +31,18 @@ const Rides = props => {
     }
   }, [userId]);
 
-  const deleteRideHandler = () => {
-    alert("Are you sure you want to delete this ride?");
+
+  useEffect(() => {
+    fetchRidesHandler()
+  }, [fetchRidesHandler]);
+
+  const deleteRideHandler = ride => {
+    props.confirmDeleteHandler(
+      <ConfirmAlert 
+        message={`Delete ride for ${ride.coasterName}?`}
+        cancelHandler={props.cancelDeleteHandler}
+        confirmHandler={() => props.deleteHandler(ride)} />
+        );
   };
 
   const editRideHandler = ride => {
@@ -40,10 +51,6 @@ const Rides = props => {
       edit: true
     }})
   }
-
-  useEffect(() => {
-    fetchRidesHandler()
-  }, [fetchRidesHandler]);
 
   const renderList = () => {
     if (loading) {
@@ -60,7 +67,7 @@ const Rides = props => {
                   key={ride._id}
                   swipeLeft={{
                     content: <ListSwipeAction label="Delete" color="red" position="right"/>,
-                    action: deleteRideHandler
+                    action: () => deleteRideHandler(ride)
                   }} 
                   swipeRight={{
                     content: <ListSwipeAction label="Edit" color="blue" position="left"/>,

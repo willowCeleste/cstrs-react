@@ -3,6 +3,7 @@ import * as React from "react";
 import { useLocation } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
 import Search from "../Search/Search";
+import Hamburger from "../SVGs/Hamburger";
 import "./Header.css";
 
 const Header = () => {
@@ -24,11 +25,7 @@ const Header = () => {
     <div className="c-header__menu-bar">
       <span>cstrs</span>
       <span onClick={toggleNav}>
-        <svg viewBox="0 0 100 80" width="40" height="40" fill="#fff">
-          <rect width="100" height="20"></rect>
-          <rect y="30" width="100" height="20"></rect>
-          <rect y="60" width="100" height="20"></rect>
-        </svg>
+        <Hamburger />
       </span>
       <div className={`c-header__nav-container ${showNav ? '' : 'c-header__nav-container--hidden'}`}>
         <Navigation />
