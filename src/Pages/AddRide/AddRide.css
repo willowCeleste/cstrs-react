@@ -6,3 +6,13 @@
 .c-add-ride__form *:not(:last-child) {
   margin-bottom: 1rem;
 }
+
+.c-add-ride__form input {
+  height: 2.5rem;
+}
+
+.c-add-ride__form textarea,
+.c-add-ride__form input {
+  font-size: var(--medium);
+  padding: 0.5rem;
+}

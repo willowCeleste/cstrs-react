@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useLocation } from "react-router";
+import { useNavigate } from "react-router-dom";
 import "./AddRide.css";
+import Button from "../../Components/Button/Button";
+import RideCard from "../../Components/RideCard/RideCard";
 
 const AddRide = props => {
+  const navigate = useNavigate();
   const location = useLocation();
   const coaster = location.state.coaster ? location.state.coaster : null;
 
@@ -29,7 +33,9 @@ const AddRide = props => {
       });
       const data = await result.json();
       if (data.success) {
-        alert('Ride created!');
+        navigate('/', { state: {
+          ride: ride
+        }});
       }
     } catch (e) {
       console.log(e);
@@ -59,12 +65,13 @@ const AddRide = props => {
   };
   
   return <div className="c-add-ride">
-    <h2>Add A Ride for {coaster.title} at {coaster._park[0].title}</h2>
+    <h2>Log A Ride</h2>
+    <RideCard coaster={coaster.title} park={coaster._park[0].title} />
     <form className="c-add-ride__form" onSubmit={handleSubmit}>
       <input type="date" onChange={dateChangeHandler} />
       <input type="number" min="0" max="10" step="0.5" placeholder="rating" onChange={ratingChangeHandler}/>
       <textarea cols="30" rows="10" placeholder="notes" onChange={notesChangeHandler}></textarea>
-      <input type="submit" value="Add Ride" />
+      <Button type="submit" label="Add Ride" />
     </form>
   </div>
 };

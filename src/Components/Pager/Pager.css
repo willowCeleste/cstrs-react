@@ -1,0 +1,35 @@
+.c-pager {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.c-pager__arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+}
+
+.c-pager__arrow__previous {
+  justify-self: start;
+}
+
+.c-pager__arrow__next {
+  justify-self: end;
+  transform: rotate(180deg);
+}
+
+.c-pager__arrow svg {
+  stroke: var(--site-secondary);
+  fill: var(--site-secondary); 
+}
+
+.c-pager__pages {
+  justify-self: center;
+}

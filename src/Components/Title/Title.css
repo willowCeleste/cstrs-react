@@ -1,3 +1,10 @@
 .c-title {
-  font-weight: 100;
+  font-family: 'Spline Sans', sans-serif;
+  font-size: var(--medium);
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.c-title--small {
+  font-size: var(--small);
 }

@@ -1,0 +1,16 @@
+.c-coaster-detail__details {
+  margin-bottom: 2rem;
+}
+
+.c-coaster-detail__buttons button {
+  margin-bottom: 1rem;
+}
+
+.c-coaster-detail__image {
+  max-width: 100%;
+}
+
+.c-coaster-detail__stat {
+  font-size: var(--medium);
+  line-height: 1.6;
+}
