@@ -11,7 +11,7 @@ const Home = props => {
 
   const recentRidesHandler = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:4000/users/60f57b4d7104b26ef6ec7a0e/rides?limit=5`); // TODO: remove hardcoded user ID
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/60f57b4d7104b26ef6ec7a0e/rides?limit=5`); // TODO: remove hardcoded user ID
       const data = await response.json();
       setRecentRides(data.rides);
       if (!response.ok) {
@@ -24,7 +24,7 @@ const Home = props => {
   }, []);
 
   const statsHandler = useCallback(async () => {
-    const response = await fetch('http://localhost:4000/stats/60f57b4d7104b26ef6ec7a0e/home/');
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/stats/60f57b4d7104b26ef6ec7a0e/home/`);
     const data = await response.json();
     setStats(data.data);
     try {
@@ -53,7 +53,7 @@ const Home = props => {
     }
 
     if (ride.image) {
-      attrs['thumbnail'] = `http://localhost:3000${ride.image}`;
+      attrs['thumbnail'] = `${process.env.REACT_APP_CMS_URL}${ride.image}`;
     }
 
     if (ride.rating) {

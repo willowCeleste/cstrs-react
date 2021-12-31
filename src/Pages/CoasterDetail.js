@@ -11,7 +11,7 @@ const CoasterDetail = () => {
 
   const fetchCoasterHandler = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/coaster/${id}`);
+      const response = await fetch(`${process.env.REACT_APP_CMS_URL}/api/v1/coaster/${id}`);
       if (!response.ok) {
         throw new Error('Something went wrong!');
       }
@@ -24,7 +24,7 @@ const CoasterDetail = () => {
   }, [id]);
 
   const getImageUrl = coaster => {
-    const firstPart = 'http://localhost:3000';
+    const firstPart = process.env.REACT_APP_CMS_URL;
     if (coaster.images.items.length) {
       return firstPart + coaster.images.items[0]._image[0].attachment._urls['one-half'];
     }

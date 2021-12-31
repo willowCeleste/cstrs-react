@@ -15,7 +15,7 @@ const Credits = () => {
 
   const fetchCreditsHandler = useCallback(async page => {
     try {
-      const response = await fetch(`http://localhost:4000/users/60f57b4d7104b26ef6ec7a0e/credits?limit=10&page=${page}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/60f57b4d7104b26ef6ec7a0e/credits?limit=10&page=${page}`);
 
       if (!response.ok) {
         throw new Error('Something went wrong!');

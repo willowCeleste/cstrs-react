@@ -25,7 +25,7 @@ const Rides = props => {
   
   const fetchRidesHandler = useCallback(async page => {
     try {
-      const response = await fetch(`http://localhost:4000/users/${userId}/rides?limit=10&page=${page}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${userId}/rides?limit=10&page=${page}`);
       if (!response.ok) {
         throw new Error('Something went wrong!');
       }
@@ -71,7 +71,7 @@ const Rides = props => {
           <Title text="Rides" />
           <SwipeableList>
             {rides.map(ride => {
-              const imageUrl = ride.image ? `http://localhost:3000/${ride.image}` : 'https://via.placeholder.com/150?text=No+Image';
+              const imageUrl = ride.image ? `${process.env.REACT_APP_CMS_URL}${ride.image}` : 'https://via.placeholder.com/150?text=No+Image';
               return (
                 <SwipeableListItem
                   key={ride._id}

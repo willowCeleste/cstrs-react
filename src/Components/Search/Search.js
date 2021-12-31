@@ -10,7 +10,7 @@ const Search = () => {
   const onSearchSubmit = async (e) => {
     e.preventDefault();
     try {
-      const result = await fetch(`http://localhost:3000/api/v1/coaster?search=${searchTerm}`);
+      const result = await fetch(`${process.env.REACT_APP_CMS_URL}/api/v1/coaster?search=${searchTerm}`);
       const data = await result.json();
       navigate('/search', {state: {
         results: data.results,

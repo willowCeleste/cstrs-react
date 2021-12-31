@@ -24,7 +24,7 @@ const AddRide = props => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const result = await fetch('http://localhost:4000/rides/add', {
+      const result = await fetch(`${process.env.REACT_APP_API_URL}/rides/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -28,7 +28,7 @@ const RideForm = props => {
   const handleEdit = async e => {
     e.preventDefault();
     try {
-      const result = await fetch(`http://localhost:4000/rides/${ride._id}`, {
+      const result = await fetch(`${process.env.REACT_APP_API_URL}/rides/${ride._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
