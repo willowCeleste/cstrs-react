@@ -15,7 +15,6 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchUserHandler = useCallback(async () => {
-    console.log(userContext);
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/home`, {
         method: 'GET',
@@ -25,7 +24,6 @@ const Home = () => {
           Authorization: `Bearer ${userContext.token}`
         }
       });
-      console.log('res', response);
       if (!response.ok) {
         throw new Error('Something went wrong!');
       } else {
@@ -34,7 +32,6 @@ const Home = () => {
         setRecentRides(data.recentRides);
         setStats(data.stats);
         setLoading(false);
-        console.log(data.stats);
       }
     } catch (e) {
       console.log(e);

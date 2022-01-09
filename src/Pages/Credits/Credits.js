@@ -55,6 +55,7 @@ const Credits = () => {
   }, [userContext.token]);
 
   const renderCredits = () => {
+    console.log(credits);
     if (credits.length) {
       return (
         <ul>

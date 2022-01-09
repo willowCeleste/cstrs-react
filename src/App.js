@@ -1,5 +1,5 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { useCallback, useContext, useEffect } from 'react';
 import { UserContext } from './Context/UserContext'
 import Protected from './Components/Protected/Protected';
 import Header from './Components/Header/Header';
@@ -19,7 +19,6 @@ import './App.css';
 
 function App() {
   const [userContext, setUserContext] = useContext(UserContext);
-  const location = useLocation();
 
   const verifyUser = useCallback(async () => {
     try {
@@ -38,11 +37,12 @@ function App() {
             return { ...oldValues, token: null }
           })
         }
-        // call refreshToken every 5 minutes to renew the authentication token.
+        // renew the auth token every 5 mins
         setTimeout(verifyUser, 5 * 60 * 1000)
       })
     } catch (e) {
       console.log(e);
+      throw new Error('Something went wrong');
     }
   }, [setUserContext]);
 
