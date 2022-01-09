@@ -1,6 +1,5 @@
 .c-ride-card {
   display: flex;
-  margin-bottom: 1rem;
 }
 
 .c-ride-card a {
@@ -58,4 +57,8 @@
   color: #fff;
   font-weight: bold;
   background: var(--site-primary);
+}
+
+.swipeable-list-item {
+  margin-bottom: 1rem;
 }

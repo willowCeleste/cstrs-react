@@ -2,7 +2,7 @@
   height: 4rem;
   width: 100%;
   border: none;
-  background: var(--site-secondary);
+  background: var(--site-primary-alt);
   color: var(--white);
   font-size: var(--medium);
 }

@@ -8,7 +8,6 @@ const StatListItem = props => {
 };
 
 const StatList = props => {
-  // console.log('items', props.items);
   return (
     <div>
       <h3>{props.title}</h3>

@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../../Context/UserContext";
 import Button from "../Button/Button";
 
 const RideForm = props => {
+  const [userContext, setUserContext] = useContext(UserContext);
   const [ride, setRide] = useState(props.ride);
   
   const dateChangeHandler = e => {
@@ -32,6 +34,7 @@ const RideForm = props => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${userContext.token}`
         },
         body: JSON.stringify(ride)
       });
@@ -39,7 +42,6 @@ const RideForm = props => {
       const data = await result.json();
       if (data.success) {
         alert('Ride Edited!');
-        console.log(data);
       }
     } catch (e) {
       console.log(e);

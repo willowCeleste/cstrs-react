@@ -2,8 +2,7 @@ import dayjs from 'dayjs';
 import "./RideCard.css";
 
 const RideCard = props => {
-  const thumbnailUrl = props.thumbnail || 'https://via.placeholder.com/150?text=No+Image';
-
+  const thumbnailUrl = props.thumbnail && props.thumbnail.length ? props.thumbnail : 'https://via.placeholder.com/150?text=No+Image';
 
   return <div className="c-ride-card">
     <div className="c-ride-card__thumbnail-container">

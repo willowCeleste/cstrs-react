@@ -1,33 +1,70 @@
-import { useState } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import "./AddRide.css";
+import { UserContext } from "../../Context/UserContext";
+import Title from "../../Components/Title/Title";
 import Button from "../../Components/Button/Button";
 import RideCard from "../../Components/RideCard/RideCard";
+import Search from "../../Components/Search/Search";
 
 const AddRide = props => {
   const navigate = useNavigate();
   const location = useLocation();
-  const coaster = location.state.coaster ? location.state.coaster : null;
+  const [userContext, setUserContext] = useContext(UserContext);
+  const [user, setUser] = useState(null);
+  const today = new Date().toISOString().split('T')[0];
+  const [ride, setRide] = useState({});
+  const [coaster, setCoaster] = useState(null);
+  console.log('location state', location.state);
 
-  const [ride, setRide] = useState({
-    coasterId: coaster._id,
-    coasterName: coaster.title,
-    parkId: coaster._park[0]._id,
-    parkName: coaster._park[0].title,
-    user: props.user._id,
-    date: '',
-    notes: '',
-    rating: null
-  });
+  const fetchDataHandler = useCallback(async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/addRide`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userContext.token}`
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Something went wrong!');
+      }
+      const data = await response.json();
+      setUser(data.user);
+    } catch(e) {
+      console.log(e);
+    }
+  }, [userContext.token]);
+
+  useEffect(() => {
+    fetchDataHandler();
+  }, [fetchDataHandler]);
+
+  useEffect(useCallback(async () => {
+    if (location.state) {
+      setCoaster(location.state.coaster ? location.state.coaster : null);
+      setRide({
+        coasterId: location.state.coaster._id,
+        coasterName: location.state.coaster.title,
+        parkId: location.state.coaster._park[0]._id,
+        parkName: location.state.coaster._park[0].title,
+        date: today,
+        notes: '',
+        rating: null
+      });
+    }
+  }, [location.state, today]), [setCoaster, location.state, today]);
 
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const result = await fetch(`${process.env.REACT_APP_API_URL}/rides/add`, {
+      const result = await fetch(`${process.env.REACT_APP_API_URL}/createRide`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userContext.token}`
         },
         body: JSON.stringify(ride)
       });
@@ -63,12 +100,28 @@ const AddRide = props => {
       return prevState;
     });
   };
+
+  const suggestionClickHandler = suggestion => {
+    setCoaster(suggestion);
+    setRide({
+      coasterId: suggestion._id,
+      coasterName: suggestion.title,
+      parkId: suggestion._park[0]._id,
+      parkName: suggestion._park[0].title,
+      date: today,
+      notes: '',
+      rating: null
+    });
+  };
   
   return <div className="c-add-ride">
-    <h2>Log A Ride</h2>
-    <RideCard coaster={coaster.title} park={coaster._park[0].title} />
+    <Title text="Log a Ride" />
+    <div className="c-add-ride__search">
+      <Search type="coaster" suggestHandler={suggestionClickHandler} showSuggestions={true} />
+    </div>
+    {coaster && <RideCard coaster={coaster.title} park={coaster._park[0].title} />}
     <form className="c-add-ride__form" onSubmit={handleSubmit}>
-      <input type="date" onChange={dateChangeHandler} />
+      <input type="date" onChange={dateChangeHandler} defaultValue={today}/>
       <input type="number" min="0" max="10" step="0.5" placeholder="rating" onChange={ratingChangeHandler}/>
       <textarea cols="30" rows="10" placeholder="notes" onChange={notesChangeHandler}></textarea>
       <Button type="submit" label="Add Ride" />

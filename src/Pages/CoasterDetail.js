@@ -16,7 +16,6 @@ const CoasterDetail = () => {
         throw new Error('Something went wrong!');
       }
       const data = await response.json();
-      console.log('coaster', data);
       setCoaster(data);
     } catch (e) {
       console.log(e);
@@ -50,7 +49,7 @@ const CoasterDetail = () => {
     )}
     <div className="c-coaster-detail__buttons">
       <Link to="/addRide" state={{ coaster }}><Button label="Log a Ride"/></Link>
-      <Link to="/"><Button label="Add to List"/></Link>
+      <Link to="/lists" state={{ add: true, coaster }}><Button label="Add to List"/></Link>
     </div>
   </div>;
 };

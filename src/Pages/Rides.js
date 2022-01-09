@@ -1,11 +1,13 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
+import { UserContext } from '../Context/UserContext';
 import ListSwipeAction from '../Components/ListSwipeAction/ListSwipeAction';
 import RideCard from '../Components/RideCard/RideCard';
 import ConfirmAlert from '../Components/ConfirmAlert/ConfirmAlert';
 import Title from '../Components/Title/Title';
 import Pager from '../Components/Pager/Pager';
 import Loading from '../Components/Loading/Loading';
+import Alert from '../Components/Alert/Alert';
 import { SwipeableList, SwipeableListItem } from '@sandstreamdev/react-swipeable-list';
 import '@sandstreamdev/react-swipeable-list/dist/styles.css';
 import "./Rides.css";
@@ -14,18 +16,27 @@ import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 
-const Rides = props => {
+const Rides = () => {
   const navigate = useNavigate();
+  const [userContext, setUserContext] = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [rides, setRides] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalRides, setTotalRides] = useState(0);
-  const userId = props.user._id;
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState('');
   
   const fetchRidesHandler = useCallback(async page => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${userId}/rides?limit=10&page=${page}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/rides?limit=10&page=${page}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userContext.token}`
+        }
+      });
       if (!response.ok) {
         throw new Error('Something went wrong!');
       }
@@ -39,20 +50,44 @@ const Rides = props => {
       console.log(e);
     }
     setLoading(false);
-  }, [userId]);
+  }, [userContext]);
 
 
   useEffect(() => {
-    fetchRidesHandler(1)
+    fetchRidesHandler(1);
   }, [fetchRidesHandler]);
 
   const deleteRideHandler = ride => {
-    props.confirmDeleteHandler(
-      <ConfirmAlert 
-        message={`Delete ride for ${ride.coasterName}?`}
-        cancelHandler={props.cancelDeleteHandler}
-        confirmHandler={() => props.deleteHandler(ride)} />
-        );
+    setAlertContent(<ConfirmAlert 
+      message={`Delete ride for ${ride.coasterName}?`}
+      cancelHandler={cancelDeleteHandler}
+      confirmHandler={() => deleteHandler(ride)} />);
+    setShowAlert(true);
+  };
+
+  const cancelDeleteHandler = () => {
+    setShowAlert(false);
+  };
+
+  const deleteHandler = async ride => {
+    try {
+      const result = await fetch(`${process.env.REACT_APP_API_URL}/rides/${ride._id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userContext.token}`
+        }
+      });
+      if (result.ok) {
+        alert(`Deleted ride for ${ride.coasterName}`);
+        setShowAlert(false);
+        fetchRidesHandler(1);
+      } else {
+        alert('Something went wrong');
+      }
+    } catch(e) {
+      console.log(e);
+    }
   };
 
   const editRideHandler = ride => {
@@ -60,7 +95,7 @@ const Rides = props => {
       ride: ride,
       edit: true
     }})
-  }
+  };
 
   const renderList = () => {
     if (loading) {
@@ -94,11 +129,12 @@ const Rides = props => {
     } else {
       return <p>You haven't recorded any rides yet!</p>
     }
-  }
+  };
 
   return loading ? <Loading /> : <div>
+    {showAlert && <Alert content={alertContent} show={showAlert} />}
     {renderList()}
-    <Pager currentPage={currentPage} totalPages={totalPages} onPrevious={fetchRidesHandler} onNext={fetchRidesHandler} />
+    {rides.length ? <Pager currentPage={currentPage} totalPages={totalPages} onPrevious={fetchRidesHandler} onNext={fetchRidesHandler} /> : ''}
   </div>
 };
 

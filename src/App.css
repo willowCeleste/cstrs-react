@@ -24,10 +24,15 @@
 }
 
 .c-app__content {
+  position: relative;
   margin: 1rem;
 }
 
 /* Resets */
+* {
+  box-sizing: border-box;
+}
+
 ul, ol, p {
   margin: 0;
   padding: 0;
@@ -42,13 +47,54 @@ ul a {
   color: #000;
 }
 
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.o-input {
+  display: block;
+  height: 2.5rem;
+  width: 100%;
+  font-size: var(--medium);
+  padding: 0.5rem;
+  border: 1px solid var(--light-grey);
+}
+
+.o-input:focus {
+  border-color: var(--site-primary-alt);
+  border-width: 2px;
+  outline: none;
+}
+
+.o-input--error {
+  border-color: var(--error);
+}
+
+.c-login__form button {
+  margin: 2rem 0;
+}
+
+.o-link {
+  color: var(--site-primary);
+  font-size: var(--medium);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.c-ride-list__item {
+  margin-bottom: 1rem;
+}
+
 /* variables */
 :root {
   /* colors */
   --site-primary: #C16E70;
   --site-secondary: #DC9E82;
   --site-tertiary: #151E3F;
+  --site-primary-alt: #94BFBE;
   --white: #fff;
+  --light-grey: #999;
+  --error: red;
 
   /* font sizes */
   --xx-small: 12px;
@@ -56,5 +102,31 @@ ul a {
   --small: 16px;
   --medium: 20px;
   --large: 24px;
+  --xlarge: 32px;
+  --juniorjumbo: 48px;
   --jumbo: 100px;
+}
+
+.o-button__quick-add {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  border: none;
+  width: 4rem;
+  height: 4rem;
+  background: var(--site-primary);
+  color: var(--white);
+  font-size: var(--xlarge);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.o-button--round {
+  border-radius: 35%;
+}
+
+.c-home__quick-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 1rem;
+  row-gap: 2rem;
 }

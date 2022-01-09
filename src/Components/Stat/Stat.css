@@ -1,0 +1,26 @@
+.c-stat {
+  display: flex;
+  flex-direction: column;
+ text-align: center;
+}
+
+.c-stat__stat {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-size: var(--juniorjumbo);
+}
+
+.c-stat__text {
+  font-size: var(--medium);
+}
+
+.c-stat__stat-inner {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 4.8rem;
+  height: 4.8rem;
+  color: var(--white);
+  border-radius: 50%;
+  background: var(--site-primary-alt);
+}

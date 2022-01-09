@@ -29,7 +29,7 @@ const Header = () => {
       </span>
       <div className={`c-header__nav-container ${showNav ? '' : 'c-header__nav-container--hidden'}`}>
         <Navigation />
-        <Search className="c-header__search" />
+        <Search className="c-header__search" showSuggestions={false} />
       </div>
     </div>
   </header>

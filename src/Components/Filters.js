@@ -1,6 +1,5 @@
 const Filters = props => {
   const onFilterSelect = e => {
-    console.log(e.target.value);
     props.onFilter(e.target.value);
   };
 

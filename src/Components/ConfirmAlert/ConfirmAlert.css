@@ -1,0 +1,56 @@
+.c-alert {
+  z-index: 4;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  animation-duration: 0.3s;
+  animation-name: fadeIn;
+}
+
+@keyframes fadeAndSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.c-alert__show {
+  opacity: 1;
+}
+
+.c-confirm-alert {
+  padding: 2rem;
+  margin: 1rem;
+  background: var(--white);
+  animation-duration: 0.3s;
+  animation-name: fadeAndSlideUp;
+}
+
+.c-confirm-alert__buttons .c-button {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.c-confirm-alert__message {
+  margin-top: 0;
+  margin-bottom: 2rem;
+}

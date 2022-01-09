@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
+import { UserContext } from "../../Context/UserContext";
 import RideCard from '../../Components/RideCard/RideCard';
 import ProgressBar from "../../Components/ProgressBar/ProgressBar";
 import Loading from "../../Components/Loading/Loading";
@@ -7,63 +8,92 @@ import Pager from "../../Components/Pager/Pager";
 import "./Credits.css";
 
 const Credits = () => {
+  const [userContext, setUserContext] = useContext(UserContext);
   const [credits, setCredits] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalCredits, setTotalCredits] = useState(0);
   const [loading, setLoading] = useState(true);
+  let milestone;
+  let prevMilestone;
+
+  const milestones = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600];
+
+  milestones.forEach((number, index)=> {
+    if (index > 0) {
+      if (totalCredits >= milestones[index -1] && totalCredits < number) {
+        milestone = number;
+        prevMilestone = milestones[index -1];
+      } 
+    }
+  });
 
   const fetchCreditsHandler = useCallback(async page => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/60f57b4d7104b26ef6ec7a0e/credits?limit=10&page=${page}`);
-
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/credits?limit=10&page=${page}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userContext.token}`
+        }
+      });
       if (!response.ok) {
-        throw new Error('Something went wrong!');
+        console.log('Something went wrong');
+        throw new Error('Something went wrong');
       }
       const data = await response.json();
-      setCurrentPage(data.data.currentPage);
-      setTotalPages(data.data.totalPages);
-      setCredits(data.data.credits);
-      setTotalCredits(data.data.totalCredits);
+      console.log(data.credits);
+      setCredits(data.credits);
+      setCurrentPage(data.currentPage);
+      setTotalPages(data.totalPages);
+      setTotalCredits(data.totalCredits);
       setLoading(false);
-      window.scrollTo(0, 0);
     } catch (e) {
       console.log(e);
-      setLoading(false);
     }
-  }, []);
+  }, [userContext.token]);
 
   const renderCredits = () => {
     if (credits.length) {
       return (
         <ul>
-          {credits.map(credit => <RideCard key={credit._id} date={credit.firstRideDate} coaster={credit._id} park={credit.park} />)}
+          {credits.map(credit => {
+            console.log(credit);
+            return <RideCard 
+                      key={credit._id} 
+                      date={credit.firstRideDate} 
+                      coaster={credit._id} park={credit.park} 
+                      thumbnail={credit.image && credit.image.length ? `${process.env.REACT_APP_CMS_URL}${credit.image}` : ''} />
+          })}
         </ul>
       )
     }
-    return <div>No credits found 🙁</div>
+    return <div>No credits found! Record your first Ride to get your first credit!</div>
   };
 
   const renderProgress = () => {
     if (credits.length) {
+      console.log('prev', prevMilestone);
       return (
         <div>
-          <p className="c-credits__progress-message">You've got {totalCredits} credits! Just {50 - totalCredits} more until 50!</p>
-          <ProgressBar max="50" progress={totalCredits}></ProgressBar>
+          <p className="c-credits__progress-message">You've got {totalCredits} credits! Just {milestone - totalCredits} more until {milestone}!</p>
+          <ProgressBar minLabel={prevMilestone} maxLabel={milestone} max={milestone - prevMilestone} progress={totalCredits - prevMilestone} />
         </div>
       )
     }
   };
 
   useEffect(() => {
-    fetchCreditsHandler(1)
-  }, [fetchCreditsHandler])
+    fetchCreditsHandler(1);
+  }, [fetchCreditsHandler]);
+
   return loading ? <Loading /> : (
     <div>
       <Title text="Credits" />
       {renderProgress()}
       {renderCredits()}
-      <Pager currentPage={currentPage} totalPages={totalPages} onPrevious={fetchCreditsHandler} onNext={fetchCreditsHandler} />
+      {credits.length ? <Pager currentPage={currentPage} totalPages={totalPages} onPrevious={fetchCreditsHandler} onNext={fetchCreditsHandler} /> : ''}
     </div>
   )
 };

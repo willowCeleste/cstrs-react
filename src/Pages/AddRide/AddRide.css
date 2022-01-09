@@ -16,3 +16,7 @@
   font-size: var(--medium);
   padding: 0.5rem;
 }
+
+.c-add-ride__search {
+  margin-bottom: 2rem;
+}
