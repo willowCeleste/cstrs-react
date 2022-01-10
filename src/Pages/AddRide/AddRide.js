@@ -124,7 +124,7 @@ const AddRide = props => {
     <div className="c-add-ride__search">
       <Search type="coaster" suggestHandler={suggestionClickHandler} showSuggestions={true} />
     </div>
-    {coaster && <RideCard coaster={coaster.title} park={coaster._park[0].title} thumbnail={coaster.images.items.length ? buildThumbnailUrl(coaster) : ''} />}
+    {coaster && <RideCard coaster={coaster.title} park={coaster._park[0].title} thumbnail={coaster.images && coaster.images.items.length ? buildThumbnailUrl(coaster) : ''} />}
     <form className="c-add-ride__form" onSubmit={handleSubmit}>
       <input type="date" onChange={dateChangeHandler} defaultValue={today}/>
       <input type="number" min="0" max="10" step="0.5" placeholder="rating" onChange={ratingChangeHandler}/>
