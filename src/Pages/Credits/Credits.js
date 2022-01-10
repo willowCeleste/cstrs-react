@@ -43,7 +43,6 @@ const Credits = () => {
         throw new Error('Something went wrong');
       }
       const data = await response.json();
-      console.log(data.credits);
       setCredits(data.credits);
       setCurrentPage(data.currentPage);
       setTotalPages(data.totalPages);
@@ -55,17 +54,19 @@ const Credits = () => {
   }, [userContext.token]);
 
   const renderCredits = () => {
-    console.log(credits);
     if (credits.length) {
       return (
-        <ul>
+        <ul className="c-credits__list">
           {credits.map(credit => {
-            console.log(credit);
-            return <RideCard 
-                      key={credit._id} 
-                      date={credit.firstRideDate} 
-                      coaster={credit._id} park={credit.park} 
-                      thumbnail={credit.image && credit.image.length ? `${process.env.REACT_APP_CMS_URL}${credit.image}` : ''} />
+            return (
+              <li>
+                <RideCard 
+                  key={credit._id} 
+                  date={credit.firstRideDate} 
+                  coaster={credit._id} park={credit.park} 
+                  thumbnail={credit.image && credit.image.length ? `${process.env.REACT_APP_CMS_URL}${credit.image}` : ''} />
+              </li>
+            );
           })}
         </ul>
       )
@@ -75,7 +76,6 @@ const Credits = () => {
 
   const renderProgress = () => {
     if (credits.length) {
-      console.log('prev', prevMilestone);
       return (
         <div>
           <p className="c-credits__progress-message">You've got {totalCredits} credits! Just {milestone - totalCredits} more until {milestone}!</p>
@@ -92,7 +92,7 @@ const Credits = () => {
   return loading ? <Loading /> : (
     <div>
       <Title text="Credits" />
-      {renderProgress()}
+      {!loading && renderProgress()}
       {renderCredits()}
       {credits.length ? <Pager currentPage={currentPage} totalPages={totalPages} onPrevious={fetchCreditsHandler} onNext={fetchCreditsHandler} /> : ''}
     </div>

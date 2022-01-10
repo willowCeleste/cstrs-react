@@ -41,6 +41,7 @@ const Navigation = () => {
         <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/credits">Credits</Link></li>
         <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/lists">Lists</Link></li>
         <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/stats">Stats</Link></li>
+        <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/info">Info</Link></li>
         {renderLoginLogout()}
       </ul>
     </nav>  

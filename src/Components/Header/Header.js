@@ -6,7 +6,7 @@ import Search from "../Search/Search";
 import Hamburger from "../SVGs/Hamburger";
 import "./Header.css";
 
-const Header = () => {
+const Header = props => {
   const [showNav, setShowNav] = useState(false);
   const location = useLocation();
 
@@ -24,9 +24,11 @@ const Header = () => {
   return <header className="c-header">
     <div className="c-header__menu-bar">
       <span>cstrs</span>
-      <span onClick={toggleNav}>
-        <Hamburger />
-      </span>
+      {props.showToggle && (
+        <span onClick={toggleNav}>
+          <Hamburger />
+        </span>
+      )}
       <div className={`c-header__nav-container ${showNav ? '' : 'c-header__nav-container--hidden'}`}>
         <Navigation />
         <Search className="c-header__search" showSuggestions={false} />

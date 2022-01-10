@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Title from "../../Components/Title/Title";
 import Button from "../../Components/Button/Button";
 import { UserContext } from "../../Context/UserContext";
@@ -37,6 +37,12 @@ const Login = () => {
       console.log(e);
     }
   }
+
+  useEffect(() => {
+    if (userContext.token) {
+      navigate('/');
+    }
+  });
 
   return (
     <div>

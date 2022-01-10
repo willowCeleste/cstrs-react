@@ -12,9 +12,10 @@ import AddRide from './Pages/AddRide/AddRide';
 import EditRide from './Pages/EditRide/EditRide';
 import Credits from './Pages/Credits/Credits';
 import RideDetail from './Pages/RideDetail/RideDetail';
-import ListDetail from './Pages/ListDeail/ListDetail';
 import Register from './Pages/Register/Register';
 import Login from './Pages/Login/Login';
+import Stats from './Components/Stats';
+import Info from './Pages/Info/Info';
 import './App.css';
 
 function App() {
@@ -102,9 +103,14 @@ function App() {
       protected: true
     },
     {
-      path: 'list-detail',
-      element: <ListDetail />,
+      path: '/stats',
+      element: <Stats />,
       protected: true
+    },
+    {
+      path: '/info',
+      element: <Info />,
+      protected: false
     },
     {
       path: '/',
@@ -121,25 +127,12 @@ function App() {
 
   return (
     <div className="c-app">
-      <Header />
+      <Header showToggle={userContext.token !== null } />
       <div className="c-app__content">
       <Routes>
         {routes.map(route => {
           return route.protected ? <Route path={route.path} element={<Protected>{route.element}</Protected>}/> : <Route path={route.path} element={route.element} />
         })}
-        {/* <Route path
-        ="/coaster/:id" element={<CoasterDetail />}/>
-        <Route path="/sign-up" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/rides" element={<Protected><Rides /></Protected>} />
-        <Route path="/credits" element={<Credits />}/>
-        <Route path="/search" element={<SearchResults />}/>
-        <Route path="/lists" element={<Lists />}/>
-        <Route path="/addRide" element={<AddRide />}/>
-        <Route path="/edit-ride" element={<EditRide />}/>
-        <Route path="/rides/:id" element={<RideDetail />}/>
-        <Route path="/list-detail" element={<ListDetail />} />
-        <Route path="/" element={<Home />} /> */}
       </Routes>
       </div>
     </div>

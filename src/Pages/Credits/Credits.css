@@ -1,3 +1,7 @@
 .c-credits__progress-message {
   margin-bottom: 1rem;
 }
+
+.c-credits__list li {
+  margin-bottom: 1rem;
+}

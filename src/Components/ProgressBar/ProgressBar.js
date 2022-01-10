@@ -2,7 +2,6 @@ import "./ProgressBar.css";
 
 const ProgressBar = props => {
   const width = (props.progress /parseInt(props.max)) * 100;
-  console.log(props);
   return (
     <>
       <div className="c-progress-bar">

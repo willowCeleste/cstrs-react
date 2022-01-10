@@ -16,7 +16,6 @@ const AddRide = props => {
   const today = new Date().toISOString().split('T')[0];
   const [ride, setRide] = useState({});
   const [coaster, setCoaster] = useState(null);
-  console.log('location state', location.state);
 
   const fetchDataHandler = useCallback(async () => {
     try {
@@ -113,13 +112,19 @@ const AddRide = props => {
       rating: null
     });
   };
+
+  const buildThumbnailUrl = coaster => {
+    // builds URL of image in Apostrophe's format
+    const attachment = coaster.images.items[0]._image[0].attachment;
+    return `${process.env.REACT_APP_CMS_URL}/uploads/attachments/${attachment._id}-${attachment.title}.one-half.${attachment.extension}`;
+  };
   
   return <div className="c-add-ride">
     <Title text="Log a Ride" />
     <div className="c-add-ride__search">
       <Search type="coaster" suggestHandler={suggestionClickHandler} showSuggestions={true} />
     </div>
-    {coaster && <RideCard coaster={coaster.title} park={coaster._park[0].title} />}
+    {coaster && <RideCard coaster={coaster.title} park={coaster._park[0].title} thumbnail={coaster.images.items.length ? buildThumbnailUrl(coaster) : ''} />}
     <form className="c-add-ride__form" onSubmit={handleSubmit}>
       <input type="date" onChange={dateChangeHandler} defaultValue={today}/>
       <input type="number" min="0" max="10" step="0.5" placeholder="rating" onChange={ratingChangeHandler}/>

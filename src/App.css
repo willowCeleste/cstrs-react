@@ -81,6 +81,29 @@ body {
   font-weight: 600;
 }
 
+.o-link__paragraph {
+  font-size: inherit;
+}
+
+.o-paragraph,
+.o-list {
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  font-size: var(--medium);
+}
+
+.o-list li {
+  margin-bottom: 0.5rem;
+}
+
+.o-list li:last-of-type {
+  margin-bottom: 0;
+}
+
+.o-list__bold {
+  font-weight: 600;
+}
+
 .c-ride-list__item {
   margin-bottom: 1rem;
 }

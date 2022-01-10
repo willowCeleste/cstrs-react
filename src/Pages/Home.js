@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
+import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
 import RideList from '../Components/RideList/RideList';
@@ -8,6 +9,7 @@ import Loading from '../Components/Loading/Loading';
 import Stat from '../Components/Stat/Stat';
 
 const Home = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [userContext, setUserContext] = useContext(UserContext);
   const [recentRides, setRecentRides] = useState([]);
@@ -39,8 +41,11 @@ const Home = () => {
   }, [userContext]);
 
   useEffect(() => {
+    if (!userContext.token) {
+      navigate('/login');
+    }
     fetchUserHandler();
-  }, [fetchUserHandler]);
+  }, [fetchUserHandler, navigate, userContext.token]);
 
   const mappedRides = recentRides.map(ride => {
     const attrs = {

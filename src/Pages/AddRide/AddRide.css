@@ -20,3 +20,7 @@
 .c-add-ride__search {
   margin-bottom: 2rem;
 }
+
+.c-add-ride .c-ride-card {
+  margin-bottom: 1rem;
+}
