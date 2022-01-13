@@ -12,3 +12,8 @@
   display: flex;
   justify-content: space-between;
 }
+
+.c-stats .c-ride-list {
+  margin-bottom: 1.6rem;
+  border: 1px solid black;
+}

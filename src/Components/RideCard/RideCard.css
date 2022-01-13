@@ -49,10 +49,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  right: 0;
-  bottom: 0.2rem;
-  width: 1.8rem;
-  height: 1.8rem;
+  right: -4px;
+  bottom: 0px;
+  width: 1.5rem;
+  height: 1.5rem;
   font-size: var(--xx-small);
   color: #fff;
   font-weight: bold;

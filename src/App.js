@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from './Context/UserContext'
 import Protected from './Components/Protected/Protected';
 import Header from './Components/Header/Header';
@@ -16,11 +16,13 @@ import Register from './Pages/Register/Register';
 import Login from './Pages/Login/Login';
 import Stats from './Components/Stats';
 import Info from './Pages/Info/Info';
+import ListDetail from './Pages/ListDetail/ListDetail';
+import AddToList from './Pages/AddToList/AddToList';
 import './App.css';
 
 function App() {
   const [userContext, setUserContext] = useContext(UserContext);
-
+  const [contextualIems, setContextualItems] = useState([]);
   const verifyUser = useCallback(async () => {
     try {
       fetch(`${process.env.REACT_APP_API_URL}/refreshToken`, {
@@ -46,6 +48,12 @@ function App() {
       throw new Error('Something went wrong');
     }
   }, [setUserContext]);
+
+  const handleContextualItems = items => {
+    console.log('setting contextual items', items);
+    // setContextualItems(items);
+    return items;
+  }
 
   useEffect(() => {
     verifyUser();
@@ -88,6 +96,10 @@ function App() {
       protected: true
     },
     {
+      path: 'list-detail',
+      element: <ListDetail setContextual={handleContextualItems} />
+    },
+    {
       path: 'addRide',
       element: <AddRide />,
       protected: true
@@ -113,6 +125,11 @@ function App() {
       protected: false
     },
     {
+      path: '/add-to-list',
+      element: <AddToList />,
+      protected: true
+    },
+    {
       path: '/',
       element: <Home />,
       protected: true
@@ -127,7 +144,7 @@ function App() {
 
   return (
     <div className="c-app">
-      <Header showToggle={userContext.token !== null } />
+      <Header showToggle={userContext.token !== null } contextualItems={handleContextualItems()} />
       <div className="c-app__content">
       <Routes>
         {routes.map(route => {

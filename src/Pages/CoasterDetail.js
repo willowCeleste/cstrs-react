@@ -49,7 +49,7 @@ const CoasterDetail = () => {
     )}
     <div className="c-coaster-detail__buttons">
       <Link to="/addRide" state={{ coaster }}><Button label="Log a Ride"/></Link>
-      <Link to="/lists" state={{ add: true, coaster }}><Button label="Add to List"/></Link>
+      <Link to="/add-to-list" state={{ add: true, coaster }}><Button label="Add to List"/></Link>
     </div>
   </div>;
 };

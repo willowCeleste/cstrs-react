@@ -119,7 +119,7 @@ const Rides = () => {
                     action: () => editRideHandler(ride)
                   }}
                 >
-                  <RideCard thumbnail={imageUrl} date={ride.date} coaster={ride.coasterName} park={ride.parkName}/>
+                  <RideCard thumbnail={imageUrl} date={ride.date} coaster={ride.coasterName} park={ride.parkName} rating={ride.rating}/>
                 </SwipeableListItem>
               )
             })}

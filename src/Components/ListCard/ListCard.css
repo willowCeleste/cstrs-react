@@ -1,0 +1,56 @@
+.c-list-card {
+  display: flex;
+}
+
+.c-list-card .c-title {
+  margin: 0;
+}
+
+.c-list-card__rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  width: 3rem;
+  height: 3rem;
+  background: var(--site-primary-alt);
+  color: var(--white);
+  border-radius: 50%;
+}
+
+.c-list-card__buttons {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+}
+
+.c-list-card__button {
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+}
+
+.c-list-card__button svg {
+  fill: var(--site-secondary);
+}
+
+.c-list-card__button--up {
+  display: block;
+  margin-right: 1rem;
+  transform: rotate(90deg);
+}
+
+.c-list-card__button--down {
+  display: block;
+  transform: rotate(-90deg);
+}
+
+.c-list-card svg {
+  width: 1rem;
+}

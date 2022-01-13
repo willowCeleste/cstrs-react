@@ -14,7 +14,7 @@
 .c-header__menu-bar {
   display: flex;
   position: relative;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   padding: 1rem;
   background: var(--site-primary);
@@ -34,4 +34,19 @@
 
 .c-header__nav-container--hidden {
   display: none;
+}
+
+.c-header__nav-toggle {
+  margin-right: 1.5rem;
+}
+
+.c-header__contextual-toggle {
+  position: relative;
+  margin-left: auto;
+}
+
+.c-header__contextual-menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
 }

@@ -1,0 +1,28 @@
+.c-stat-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.c-stat-card__title {
+  font-weight: 400;
+}
+
+.c-stat-card__subtitle {
+  color: var(--light-grey);
+  font-weight: 400;
+}
+
+.c-stat-card__value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  width: 3rem;
+  font-weight: 500;
+  font-size: var(--medium);
+  color: var(--white);
+  background: var(--site-primary-alt);
+  border-radius: 50%;
+}
