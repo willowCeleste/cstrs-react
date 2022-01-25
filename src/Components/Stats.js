@@ -8,10 +8,7 @@ const Stats = props => {
   const [userContext, setUserContext] = useContext(UserContext);
   const [stats, setStats] = useState(null);
 
-  console.log('hi');
-
   const fetchStatsHandler = useCallback(async () => {
-    console.log('fetching stats');
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/stats`, {
         method: 'GET',
@@ -25,7 +22,6 @@ const Stats = props => {
         throw new Error('Something went wrong!');
       }
       const data = await response.json();
-      console.log(data);
       setStats(data.stats);
     } catch (e) {
       console.log(e);
@@ -62,7 +58,6 @@ const Stats = props => {
           <Title size="small" text="Highest Average Rating" />
           {(stats && stats.coastersByAvgRating.length) && (
             <RideList items={stats.coastersByAvgRating.map(item => {
-              console.log(item)
               return (
                 <li key={item._id}>
                   <StatCard title={item.name} value={item.avgRating} />

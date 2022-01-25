@@ -1,0 +1,21 @@
+.c-profile__image-preview-container {
+  width: 100px;
+  height: 100px;
+  margin-right: 2rem;
+}
+
+.c-profile__image-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.c-profile__image-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.c-profile__file-input {
+  flex: 75%;
+}

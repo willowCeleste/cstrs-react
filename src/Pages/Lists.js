@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../Context/UserContext";
 import Title from "../Components/Title/Title";
+import "./Lists.css";
 
 const Lists = () => {
   const [userContext, setUserContext] = useContext(UserContext);
@@ -31,13 +32,14 @@ const Lists = () => {
 
   return (
     <div>
+      <Link to="/create-list"><button className="o-button__quick-add o-button--round">+</button></Link>
       <Title text="Lists" />
       {lists.length && (
         <ul>
           {lists.map(list => {
             return (
-              <li key={list._id}>
-                <Link to="/list-detail" state={list._id}><li key={list._id}>{list.title}</li></Link>
+              <li className="c-lists__list-item" key={list._id}>
+                <Link to="/list-detail" state={list._id}>{list.title}</Link>
               </li>
             )
           })}

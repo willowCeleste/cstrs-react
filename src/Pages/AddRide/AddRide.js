@@ -16,6 +16,8 @@ const AddRide = props => {
   const today = new Date().toISOString().split('T')[0];
   const [ride, setRide] = useState({});
   const [coaster, setCoaster] = useState(null);
+  const [rating, setRating] = useState(0);
+  const [dateUnkown, setDateUnkown] = useState(false);
 
   const fetchDataHandler = useCallback(async () => {
     try {
@@ -94,6 +96,7 @@ const AddRide = props => {
   };
 
   const ratingChangeHandler = e => {
+    setRating(e.target.value);
     setRide(prevState => {
       prevState.rating = e.target.value;
       return prevState;
@@ -113,6 +116,10 @@ const AddRide = props => {
     });
   };
 
+  const dateUnkownHandler = e => {
+    setDateUnkown(e.target.checked);
+  };
+
   const buildThumbnailUrl = coaster => {
     // builds URL of image in Apostrophe's format
     const attachment = coaster.images.items[0]._image[0].attachment;
@@ -126,8 +133,17 @@ const AddRide = props => {
     </div>
     {coaster && <RideCard coaster={coaster.title} park={coaster._park[0].title} thumbnail={coaster.images && coaster.images.items.length ? buildThumbnailUrl(coaster) : ''} />}
     <form className="c-add-ride__form" onSubmit={handleSubmit}>
-      <input type="date" onChange={dateChangeHandler} defaultValue={today}/>
-      <input type="number" min="0" max="10" step="0.5" placeholder="rating" onChange={ratingChangeHandler}/>
+      <input type="date" onChange={dateChangeHandler} defaultValue={today} disabled={dateUnkown}/>
+      <div>
+        <input name="dateUnknown" type="checkbox" onChange={dateUnkownHandler} />
+        <label htmlFor="dateUnknown">Date Unknown</label>
+      </div>
+      <label htmlFor="rating">Rating</label>
+      <div className="c-add-ride__range-container">
+        <input className="c-add-ride__rating-range" name="rating" type="range" min="0" max="10" step="0.5" defaultValue="0" onChange={ratingChangeHandler} />
+        <span className="c-add-ride__rating">{ rating > 0 ? rating : 'Unrated' }</span>
+      </div>
+      
       <textarea cols="30" rows="10" placeholder="notes" onChange={notesChangeHandler}></textarea>
       <Button type="submit" label="Add Ride" />
     </form>

@@ -1,0 +1,12 @@
+.c-list-detail__title-container {
+  display: flex;
+  align-items: baseline;
+}
+
+.c-list-detail__button {
+  margin-left: 1rem;
+  height: auto;
+  border: none;
+  background: none;
+  font-size: var(--small);
+}

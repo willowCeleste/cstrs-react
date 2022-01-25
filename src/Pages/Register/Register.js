@@ -49,7 +49,6 @@ const Register = () => {
         throw new Error('Something went wrong');
       }
       const data = await response.json();
-      console.log(data);
       setUserContext(prev => {
         return {...prev, token: data.token}
       });

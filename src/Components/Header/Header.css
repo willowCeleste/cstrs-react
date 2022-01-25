@@ -40,13 +40,30 @@
   margin-right: 1.5rem;
 }
 
-.c-header__contextual-toggle {
+.c-header__user {
+  display: flex;
+  align-items: center;
   position: relative;
+  font-size: var(--small);
+}
+
+.c-header__user-link {
   margin-left: auto;
+  color: var(--white);
+  text-decoration: none;
 }
 
 .c-header__contextual-menu {
   position: absolute;
   top: 110%;
   right: 0;
+}
+
+.c-header__user-image {
+  content: '';
+  margin-left: 0.5rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  background: var(--light-grey);
+  border-radius: 50%;
 }

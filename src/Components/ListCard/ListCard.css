@@ -1,5 +1,12 @@
 .c-list-card {
   display: flex;
+  /* align-items: center; */
+}
+
+.c-list-card--completed .c-title,
+.c-list-card--completed .c-list-card__subtitle {
+  color: var(--light-grey);
+  text-decoration: line-through;
 }
 
 .c-list-card .c-title {
@@ -53,4 +60,17 @@
 
 .c-list-card svg {
   width: 1rem;
+}
+
+.c-list-card__checkbox {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 1rem;
+  margin-top: 9px;
+}
+
+.c-list-card__subtitle {
+  font-size: var(--small);
+  font-weight: 400;
+  color: var(--light-grey);
 }

@@ -29,7 +29,7 @@ const Login = () => {
       } else {
         const data = await response.json();
         setUserContext(prev => {
-          return {...prev, token: data.token}
+          return {...prev, token: data.token, user: data.user}
         });
         navigate('/');
       }

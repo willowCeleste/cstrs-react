@@ -18,11 +18,12 @@ import Stats from './Components/Stats';
 import Info from './Pages/Info/Info';
 import ListDetail from './Pages/ListDetail/ListDetail';
 import AddToList from './Pages/AddToList/AddToList';
+import CreateList from './Pages/CreateList/CreateList';
+import Profile from './Pages/Profile/Profile';
 import './App.css';
 
 function App() {
   const [userContext, setUserContext] = useContext(UserContext);
-  const [contextualIems, setContextualItems] = useState([]);
   const verifyUser = useCallback(async () => {
     try {
       fetch(`${process.env.REACT_APP_API_URL}/refreshToken`, {
@@ -33,7 +34,7 @@ function App() {
         if (response.ok) {
           const data = await response.json();
           setUserContext(oldValues => {
-            return { ...oldValues, token: data.token }
+            return { ...oldValues, token: data.token, user: data.user }
           });
         } else {
           setUserContext(oldValues => {
@@ -48,12 +49,6 @@ function App() {
       throw new Error('Something went wrong');
     }
   }, [setUserContext]);
-
-  const handleContextualItems = items => {
-    console.log('setting contextual items', items);
-    // setContextualItems(items);
-    return items;
-  }
 
   useEffect(() => {
     verifyUser();
@@ -97,7 +92,7 @@ function App() {
     },
     {
       path: 'list-detail',
-      element: <ListDetail setContextual={handleContextualItems} />
+      element: <ListDetail />
     },
     {
       path: 'addRide',
@@ -130,21 +125,23 @@ function App() {
       protected: true
     },
     {
+      path: '/create-list',
+      element: <CreateList />
+    },
+    {
+      path: '/profile',
+      element: <Profile />
+    },
+    {
       path: '/',
       element: <Home />,
       protected: true
-    },
+    }
   ];
-
-  // const renderRoutes = () => {
-  //   return routes.map(route => {
-  //     return route.protected ? <Route path={route.path} element={<Protected>{route.element}</Protected>}/> : <Route path={route.path} element={route.element} />
-  //   });
-  // }
 
   return (
     <div className="c-app">
-      <Header showToggle={userContext.token !== null } contextualItems={handleContextualItems()} />
+      <Header showToggle={userContext.token !== null } user={userContext.user} />
       <div className="c-app__content">
       <Routes>
         {routes.map(route => {

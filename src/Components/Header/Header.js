@@ -1,16 +1,14 @@
 import { useState } from "react";
 import * as React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
+
 import Navigation from "../Navigation/Navigation";
 import Search from "../Search/Search";
 import Hamburger from "../SVGs/Hamburger";
-import ContextualMenu from "../ContextualMenu/ContextualMenu";
 import "./Header.css";
 
 const Header = props => {
   const [showNav, setShowNav] = useState(false);
-  const [showContextual, setShowContextual] = useState(false);
-  const [contextualItems, setContextualItems] = useState([]);
   const location = useLocation();
 
   // Close menu when we hit a new route
@@ -22,12 +20,6 @@ const Header = props => {
     setShowNav(prevState => {
       setShowNav(!prevState);
     });
-  };
-
-  const toggleContextual = () => {
-    setShowContextual(prevState => {
-      setShowContextual(!prevState);
-    })
   };
 
   return <header className="c-header">
@@ -42,14 +34,14 @@ const Header = props => {
         <Navigation />
         <Search className="c-header__search" showSuggestions={false} />
       </div>
-      <div className="c-header__contextual-toggle">
-        {contextualItems.length ? <button onClick={toggleContextual}>menu</button> : '' }
-        {showContextual && (
-          <div className="c-header__contextual-menu">
-            <ContextualMenu items={contextualItems} />
-          </div>
-        )}
-      </div>
+      {props.user && (
+        <Link className="c-header__user-link" to="/profile">
+          <div className="c-header__user">
+            {props.user.username}
+          <div className="c-header__user-image"></div>
+        </div>
+        </Link>
+      )}
     </div>
   </header>
 };

@@ -14,7 +14,6 @@ const AddToList = () => {
     itemName: '',
     text: ''
   });
-  console.log(location);
 
   const fetchListsHandler = useCallback(async () => {
     // temp for testing
@@ -31,7 +30,6 @@ const AddToList = () => {
       console.log("Something went wrong");
     }
     const data = await response.json();
-    console.log(data);
     setLists(data.data);
   }, [userContext.token]);
 
@@ -54,13 +52,11 @@ const AddToList = () => {
   };
 
   const listSelectChangeHandler = e => {
-    console.log(e.target.value);
     setListId(e.target.value);
   }
 
   const submitHandler = async e => {
     e.preventDefault();
-    console.log(item);
     const response = await fetch(`${process.env.REACT_APP_API_URL}/lists/${listId}/add`, {
       method: 'PUT',
       credentials: 'include',
@@ -73,15 +69,12 @@ const AddToList = () => {
     if (!response.ok) {
       alert("something went wrong");
     } else {
-      const data = await response.json();
-      console.log(data);
       alert('Added to list!');
     }
   }
 
   return (
     <div>
-      {console.log('item', item)}
       <Title text="Add To List!" />
       <form onSubmit={submitHandler}>
         <div>

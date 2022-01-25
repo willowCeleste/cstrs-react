@@ -1,39 +1,58 @@
 import { useLocation } from "react-router";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
+import { UserContext } from "../../Context/UserContext";
 import Title from "../../Components/Title/Title";
 import ListCard from "../../Components/ListCard/ListCard";
+import './ListDetail.css';
 
 const ListDetail = props => {
+  const [userContext, setUserContext] = useContext(UserContext);
   const location = useLocation();
+  const [originalList, setOriginalList] = useState(null);
   const [list, setList] = useState(null);
-  
-  const setContextualMenu = useCallback(() => {
-    props.setContextual([
-      <button>Edit</button>,
-      <button>Delete</button>,
-      <button>Share</button>
-    ]);
-  }, [props])
+  const [edit, setEdit] = useState(false);
 
   const fetchListHandler = useCallback(async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/lists/${location.state}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/lists/${location.state}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userContext.token}`
+        }
+      });
       if (!response.ok) {
         throw new Error('Something went wrong!');
       }
       const data = await response.json();
       data.data.items = data.data.items.sort(sortByRank);
       setList(data.data);
+      setOriginalList(data.data);
     } catch(e) {
       console.log(e);
     }
-  }, [location.state]);
+  }, [location.state, userContext.token]);
 
   const renderItems = itemsArray => {
+    itemsArray.sort(sortByRank);
+    if (list.listType === 'checklist') {
+      itemsArray.sort(sortByCompleted);
+    }
     return itemsArray.map(item => {
       return (
         <li key={item.itemId}>
-          <ListCard id ={item.itemId} title={item.itemName} rank={item.rank} description={item.text} onMove={moveItem} />
+          <ListCard 
+            id ={item.itemId} 
+            title={item.itemName} 
+            subtitle={item.parkName}
+            rank={item.rank} 
+            description={item.text} 
+            type={list.listType} 
+            completed={item.completed}
+            edit={edit}
+            onMove={moveItem}
+            onDelete={deleteItem} />
         </li>
       )
     });
@@ -61,9 +80,19 @@ const ListDetail = props => {
     }
 
     setList(prev => {
-      return {...prev, items: items.sort(sortByRank)}
+      // let sorted = items.sort(sortByRank);
+      return {...prev, items: items}
+    });
+  };
+
+  const deleteItem = id => {
+    const items = list.items.filter(item => {
+      return item.itemId !== id;
+    });
+    setList(prev => {
+      return {...prev, items: items}
     })
-  }
+  };
 
   const sortByRank = (a, b) => {
     if (a.rank < b.rank) {
@@ -75,15 +104,39 @@ const ListDetail = props => {
     return 0;
   };
 
+  const sortByCompleted = (a, b) => {
+    return (a.completed === b.completed ? 0 : a.completed ? 1 : -1);
+  };
+
+  const editToggleHandler = () => {
+    setEdit(prev => {
+      return !prev;
+    })
+  };
+
+  const saveHandler = () => {
+    console.log('save!');
+    setEdit(false);
+  };
+
+  const cancelHandler = () => {
+    setList(originalList);
+    setEdit(false);
+  }
+
   useEffect(() => {
     fetchListHandler();
-    setContextualMenu()
-  }, [fetchListHandler, setContextualMenu]);
+  }, [fetchListHandler]);
 
   return list ? (
     <div>
-      {console.log('list', list)}
-      <Title text={list.title} />
+      <div className="c-list-detail__title-container">
+        <Title text={list.title} />
+        <button className="c-list-detail__button" onClick={edit ? saveHandler : editToggleHandler}>
+          {edit ? 'save' : 'edit'}
+        </button>
+        {edit && <button className="c-list-detail__button" onClick={cancelHandler}>cancel</button>}
+      </div>
       {list.items.length && renderList(list.listType)}
     </div>
     ) : <div>List not found</div>

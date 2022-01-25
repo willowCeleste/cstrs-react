@@ -71,13 +71,12 @@ const Home = () => {
   };
  
   return loading ? <Loading /> : <div className="c-home">
-    <Title text={`Hello ${user.username}!`}/>
     <Link to="/addRide"><button className="o-button__quick-add o-button--round">+</button></Link>
     <section>
-      <Title text="Recent Rides" size="small" />
+      <Title text="Recent Rides"/>
       {renderRecentRides()}
     </section>
-    <Title text="Quick Stats" size="small" /> 
+    <Title text="Quick Stats" /> 
     <section className="c-home__quick-stats">
       <Stat stat={stats.newCreditsForYear} text="new credits this year" />
       <Stat stat={stats.ridesThisYear} text="total rides this year" />
