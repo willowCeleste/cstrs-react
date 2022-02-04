@@ -1,16 +1,25 @@
 import { useLocation } from "react-router";
 import { useState, useEffect, useCallback, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import Title from "../../Components/Title/Title";
 import ListCard from "../../Components/ListCard/ListCard";
+import Button from "../../Components/Button/Button";
+import Search from "../../Components/Search/Search";
+import Edit from "../../Components/SVGs/Edit";
+import Okay from "../../Components/SVGs/Okay";
+import Cancel from "../../Components/SVGs/Cancel";
+import Trash from "../../Components/SVGs/Trash";
 import './ListDetail.css';
 
 const ListDetail = props => {
+  const navigate = useNavigate();
   const [userContext, setUserContext] = useContext(UserContext);
   const location = useLocation();
   const [originalList, setOriginalList] = useState(null);
   const [list, setList] = useState(null);
   const [edit, setEdit] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   const fetchListHandler = useCallback(async () => {
     try {
@@ -59,7 +68,9 @@ const ListDetail = props => {
   };
 
   const renderList = listType => {
-    return listType === 'ranked' ? <ol className="o-list o-list--ordered">{renderItems(list.items)}</ol> : <ul className="o-list o-list--unordered">{renderItems(list.items)}</ul>
+    return listType === 'ranked' 
+      ? <ol className="o-list o-list--ordered">{renderItems(list.items)}</ol>
+      : <ul className="o-list o-list--unordered">{renderItems(list.items)}</ul>
   };
 
   const moveItem = (itemId, direction) => {
@@ -80,7 +91,6 @@ const ListDetail = props => {
     }
 
     setList(prev => {
-      // let sorted = items.sort(sortByRank);
       return {...prev, items: items}
     });
   };
@@ -114,14 +124,92 @@ const ListDetail = props => {
     })
   };
 
-  const saveHandler = () => {
-    console.log('save!');
+  const saveHandler = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/lists/${list._id}`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userContext.token}`
+        },
+        body: JSON.stringify(list)
+      });
+      if (!response.ok) {
+        alert("something went wrong");
+      } else {
+        const data = await response.json();
+        setList(data.data);
+      }
+    } catch (e) {
+      console.log(e);
+      alert("Internal server error")
+    }
     setEdit(false);
   };
+
+  const deleteListHandler = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/lists/${list._id}`, {
+        method: 'delete',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userContext.token}`
+        }
+      });
+      if (!response.ok) {
+        alert("something went wrong");
+      } else {
+        alert('List deleted successfully');
+        navigate('/lists');
+      }
+    } catch (e) {
+      console.log(e);
+      alert('Internal server error')
+    }
+  }
 
   const cancelHandler = () => {
     setList(originalList);
     setEdit(false);
+  }
+
+  const addClickHandler = () => {
+    setShowSearch(true);
+  };
+
+  const cancelSearchHandler = () => {
+    setShowSearch(false);
+  }
+
+  const suggestionClickHandler = suggestion => {
+    const newItem = {
+      rank: list.items.length + 1,
+      itemId: suggestion._id,
+      itemName: suggestion.title,
+      parkName: suggestion._park[0].title
+    };
+    addItemToList(newItem);
+    setShowSearch(false);
+  };
+
+  const addItemToList = async newItem  => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/lists/${list._id}/add`, {
+      method: 'PUT',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userContext.token}`
+      },
+      body: JSON.stringify(newItem)
+    });
+    if (!response.ok) {
+      alert("something went wrong");
+    } else {
+      const data = await response.json();
+      setList(data);
+    }
   }
 
   useEffect(() => {
@@ -129,15 +217,32 @@ const ListDetail = props => {
   }, [fetchListHandler]);
 
   return list ? (
-    <div>
+    <div className="c-list-detail">
+      {showSearch && (
+        <div className="c-list-detail__modal">
+          <div className="c-list-detail__modal-inner">
+            <div className="c-list-detail__close-container">
+              <span className="c-list-detail__close-container" onClick={cancelSearchHandler}>X</span>
+            </div>
+            <Search showSuggestions={true} suggestHandler={suggestionClickHandler} />
+          </div>
+        </div>
+      )}
       <div className="c-list-detail__title-container">
         <Title text={list.title} />
-        <button className="c-list-detail__button" onClick={edit ? saveHandler : editToggleHandler}>
-          {edit ? 'save' : 'edit'}
+        <button className="c-list-detail__button" onClick={editToggleHandler}>
+          {!edit && <Edit /> }
         </button>
-        {edit && <button className="c-list-detail__button" onClick={cancelHandler}>cancel</button>}
       </div>
-      {list.items.length && renderList(list.listType)}
+      {edit && (
+          <div className="c-list-detail__edit-controls">
+            <button className="c-list-detail__button" onClick={saveHandler}><Okay /></button>
+            <button className="c-list-detail__button" onClick={deleteListHandler}><Trash /></button>
+            <button className="c-list-detail__button" onClick={cancelHandler}><Cancel /></button>
+          </div>
+        )}
+      {list.items.length ? renderList(list.listType) : <div>There's nothing on this list yet!</div>}
+      <Button label="Add" onClick={addClickHandler} />
     </div>
     ) : <div>List not found</div>
 };

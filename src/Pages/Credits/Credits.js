@@ -59,7 +59,7 @@ const Credits = () => {
         <ul className="c-credits__list">
           {credits.map(credit => {
             return (
-              <li>
+              <li key={credit._id}>
                 <RideCard 
                   key={credit._id} 
                   date={credit.firstRideDate} 
@@ -94,7 +94,7 @@ const Credits = () => {
       <Title text="Credits" />
       {!loading && renderProgress()}
       {renderCredits()}
-      {credits.length ? <Pager currentPage={currentPage} totalPages={totalPages} onPrevious={fetchCreditsHandler} onNext={fetchCreditsHandler} /> : ''}
+      {credits.length && totalPages > 1 ? <Pager currentPage={currentPage} totalPages={totalPages} onPrevious={fetchCreditsHandler} onNext={fetchCreditsHandler} /> : ''}
     </div>
   )
 };

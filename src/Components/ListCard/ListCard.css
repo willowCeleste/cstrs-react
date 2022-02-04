@@ -74,3 +74,10 @@
   font-weight: 400;
   color: var(--light-grey);
 }
+
+.c-list-card__delete {
+  border: none; 
+  background: none;
+  height: 1.6rem;
+  margin-top: 4px;
+}

@@ -119,29 +119,22 @@ const AddRide = props => {
   const dateUnkownHandler = e => {
     setDateUnkown(e.target.checked);
   };
-
-  const buildThumbnailUrl = coaster => {
-    // builds URL of image in Apostrophe's format
-    const attachment = coaster.images.items[0]._image[0].attachment;
-    return `${process.env.REACT_APP_CMS_URL}/uploads/attachments/${attachment._id}-${attachment.title}.one-half.${attachment.extension}`;
-  };
   
   return <div className="c-add-ride">
     <Title text="Log a Ride" />
     <div className="c-add-ride__search">
       <Search type="coaster" suggestHandler={suggestionClickHandler} showSuggestions={true} />
     </div>
-    {coaster && <RideCard coaster={coaster.title} park={coaster._park[0].title} thumbnail={coaster.images && coaster.images.items.length ? buildThumbnailUrl(coaster) : ''} />}
+    {coaster && <RideCard coaster={coaster.title} park={coaster._park[0].title} thumbnail={coaster.thumbnail ? `${process.env.REACT_APP_CMS_URL}${coaster.thumbnail}` : ''} />}
     <form className="c-add-ride__form" onSubmit={handleSubmit}>
-      <input type="date" onChange={dateChangeHandler} defaultValue={today} disabled={dateUnkown}/>
-      <div>
-        <input name="dateUnknown" type="checkbox" onChange={dateUnkownHandler} />
-        <label htmlFor="dateUnknown">Date Unknown</label>
+      <div className="c-add-ride__form-field-wrapper">
+        <input className="o-checkbox" name="dateUnknown" type="checkbox" onChange={dateUnkownHandler} />
+        <label htmlFor="dateUnknown">I don't know the date</label>
       </div>
-      <label htmlFor="rating">Rating</label>
+      <input type="date" onChange={dateChangeHandler} defaultValue={today} disabled={dateUnkown}/>
+      <label htmlFor="rating">Rating - { rating > 0 ? rating : 'Unrated' }</label>
       <div className="c-add-ride__range-container">
         <input className="c-add-ride__rating-range" name="rating" type="range" min="0" max="10" step="0.5" defaultValue="0" onChange={ratingChangeHandler} />
-        <span className="c-add-ride__rating">{ rating > 0 ? rating : 'Unrated' }</span>
       </div>
       
       <textarea cols="30" rows="10" placeholder="notes" onChange={notesChangeHandler}></textarea>

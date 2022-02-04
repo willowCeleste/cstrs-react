@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import Title from "../../Components/Title/Title";
 import Search from "../../Components/Search/Search";
@@ -6,6 +7,7 @@ import ListCard from "../../Components/ListCard/ListCard";
 import "./CreateList.css";
 
 const CreateList  = () => {
+  const navigate = useNavigate();
   const [userContext, setUserContext] = useContext(UserContext);
   const [list, setList] = useState({
     title: '',
@@ -74,9 +76,11 @@ const CreateList  = () => {
         throw new Error('Something went wrong!');
       }
       const data = await response.json();
+      console.log(data);
+      navigate('/list-detail', { state: data.list._id });
     } catch (e) {
       console.log(e);
-      throw new Error('Something went wrong!');
+      alert('Internal server error');
     }
   }
 
@@ -84,25 +88,24 @@ const CreateList  = () => {
     <div className="c-create-list">
       <Title text="Create a List" />
       <div className="c-form__field-wrapper">
-        <label htmlFor="title">Title</label>
+        <label className="c-form__label" htmlFor="title">Title</label>
         <input className="o-input" type="text" onChange={titleChangeHandler}/>
       </div>
       <div className="c-form__field-wrapper">
-        <label htmlFor="listType">List Type</label>
-        <select className="o-input" name="listType" id="listType" onChange={listTypeChangeHandler}>
-        <option value="">List Type</option>
-          <option value="ranked">Ranked</option>
+        <label className="c-form__label" htmlFor="listType">List Type</label>
+        <select className="o-input o-input__select" name="listType" id="listType" onChange={listTypeChangeHandler}>
           <option value="unranked">Unranked</option>
+          <option value="ranked">Ranked</option>
           <option value="checklist">Checklist</option>
         </select>
       </div>
       <div className="c-form__field-wrapper">
-        <label htmlFor="private">Make list private?</label>
-        <input type="checkbox" onChange={privateChangeHandler} />
+        <input type="checkbox" name="makePrivate" onChange={privateChangeHandler} />
+        <label htmlFor="makePrivate">Make list private?</label>
       </div>
       <Search showSuggestions={true} suggestHandler={handleSuggestionClick} />
       <ul className="c-create-list__items">
-        {list.items.map(item => <li><ListCard title={item.itemName} subtitle={item.parkName} /></li>)}
+        {list.items.map(item => <li><ListCard title={item.itemName} subtitle={item.parkName} type="unranked" /></li>)}
       </ul>
       <button className="c-button" type="submit" onClick={submitHandler}>Save List</button>
     </div>

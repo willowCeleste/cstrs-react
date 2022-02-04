@@ -1,6 +1,6 @@
 .c-navigation {
   margin-bottom: 1rem;
-  background: var(--white);
+  background: var(--site-secondary);
 }
 
 .c-navigation__list {
@@ -19,7 +19,7 @@
   padding: 1rem;
   text-decoration: none;
   font-size: 24px;
-  color: #000;
+  color: var(--white);
   border: none;
-  background: var(--white);
+  background: var(--site-secondary);
 }

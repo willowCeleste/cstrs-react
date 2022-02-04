@@ -4,9 +4,38 @@
 }
 
 .c-list-detail__button {
-  margin-left: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: auto;
   border: none;
   background: none;
   font-size: var(--small);
+}
+
+.c-list-detail__modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.c-list-detail__modal-inner {
+  margin: 2rem;
+  padding: 1rem;
+  background: var(--white);
+}
+
+.c-list-detail__close-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.c-list-detail__edit-controls {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.2rem;
 }

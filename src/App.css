@@ -25,7 +25,7 @@
 
 .c-app__content {
   position: relative;
-  margin: 1rem;
+  padding: 1rem;
 }
 
 /* Resets */
@@ -64,6 +64,10 @@ h1, h2, h3, h4 {
   font-size: var(--medium);
   padding: 0.5rem;
   border: 1px solid var(--light-grey);
+}
+
+.o-input__select {
+  font-size: var(--small);
 }
 
 .o-input--textarea {
@@ -131,6 +135,31 @@ h1, h2, h3, h4 {
   list-style: none;
 }
 
+.o-icon {
+  stroke: var(--black);
+  stroke-width: 0.5px;
+}
+
+.o-icon--okay {
+  stroke: var(--positive);
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.o-icon--cancel {
+  width: 1rem;
+  height: 1rem;
+}
+
+.o-icon--trash {
+  stroke: var(--error);
+}
+
+.o-icon--edit {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
 /* variables */
 :root {
   /* colors */
@@ -142,7 +171,8 @@ h1, h2, h3, h4 {
   --black: #000;
   --text-primary: #333;
   --light-grey: #999;
-  --error: red;
+  --positive: #58D68D;
+  --error: #CD5C5C;
 
   /* font sizes */
   --xx-small: 12px;
@@ -181,4 +211,16 @@ h1, h2, h3, h4 {
 
 .c-form__field-wrapper {
   margin-bottom: 1rem;
+}
+
+.c-form__label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.o-checkbox {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  margin-right: 1rem;
 }

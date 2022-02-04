@@ -1,19 +1,24 @@
 import "./ListCard.css";
 import Title from "../Title/Title";
 import Arrow from "../SVGs/Arrow";
+import Trash from "../SVGs/Trash";
 
 const ListCard = props => {
   return <div className={`c-list-card${props.type === 'checklist' && props.completed ? ' c-list-card--completed' : ''}`}>
-    {props.edit ? <button onClick={() => props.onDelete(props.id)}>del</button> : ''}
-    {props.type === 'checklist' ? <input className="c-list-card__checkbox" type="checkbox" checked={props.completed} disabled /> : (
-      <div className="c-list-card__rank">
-        {props.rank}
-      </div>
+    {props.edit ? <button className="c-list-card__delete" onClick={() => props.onDelete(props.id)}><Trash /></button> : ''}
+    {props.type === 'checklist' 
+      ? <input className="c-list-card__checkbox" type="checkbox" checked={props.completed} disabled /> 
+      : (
+          props.type === 'unranked' 
+            ? ''
+            : (
+              <div className="c-list-card__rank">{props.rank}</div>
+        )
     )}
     <div>
       <Title text={props.title} size="small" />
       {props.subtitle ? <h3 className="c-list-card__subtitle">{props.subtitle}</h3> : ''}
-      {props.description ? <p class="o-paragraph o-paragraph--small">{props.description}</p>: ''}
+      {props.description ? <p className="o-paragraph o-paragraph--small">{props.description}</p>: ''}
     </div>
     {props.edit && (
       <div className="c-list-card__buttons">

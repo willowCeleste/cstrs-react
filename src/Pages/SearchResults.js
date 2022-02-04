@@ -1,6 +1,7 @@
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import RideCard from "../Components/RideCard/RideCard";
+import Title from "../Components/Title/Title";
 
 const SearchResults = props => {
   const { state } = useLocation();
@@ -20,7 +21,7 @@ const SearchResults = props => {
   };
 
   return <div>
-    <h2>Search results for "{state.searchTerm}"</h2>
+    <Title text={`Search results for "${state.searchTerm}"`} />
     { renderResults() }
   </div>;
 };

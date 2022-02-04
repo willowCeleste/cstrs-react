@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { UserContext } from './Context/UserContext'
 import Protected from './Components/Protected/Protected';
 import Header from './Components/Header/Header';
@@ -20,6 +20,7 @@ import ListDetail from './Pages/ListDetail/ListDetail';
 import AddToList from './Pages/AddToList/AddToList';
 import CreateList from './Pages/CreateList/CreateList';
 import Profile from './Pages/Profile/Profile';
+import ParkDetail from './Pages/ParkDetail/ParkDetail';
 import './App.css';
 
 function App() {
@@ -126,11 +127,18 @@ function App() {
     },
     {
       path: '/create-list',
-      element: <CreateList />
+      element: <CreateList />,
+      protected: true
     },
     {
       path: '/profile',
-      element: <Profile />
+      element: <Profile />,
+      protected: true
+    },
+    {
+      path: '/park/:id',
+      element: <ParkDetail />,
+      protected: true
     },
     {
       path: '/',
@@ -145,7 +153,7 @@ function App() {
       <div className="c-app__content">
       <Routes>
         {routes.map(route => {
-          return route.protected ? <Route path={route.path} element={<Protected>{route.element}</Protected>}/> : <Route path={route.path} element={route.element} />
+          return route.protected ? <Route key={route.path} path={route.path} element={<Protected>{route.element}</Protected>}/> : <Route path={route.path} element={route.element} />
         })}
       </Routes>
       </div>

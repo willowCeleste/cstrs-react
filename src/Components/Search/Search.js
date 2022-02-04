@@ -54,7 +54,7 @@ const Search = props => {
             if (suggestion._id === 'none') {
               return <li key={suggestion._id}>{suggestion.title}</li>
             }
-            return <li key={suggestion._id} onClick={() => suggestionClickHandler(suggestion)}>{suggestion.title} - {suggestion._park[0].title}</li>
+            return <li key={suggestion._id} onClick={() => suggestionClickHandler(suggestion)}>{suggestion.title}{suggestion._park && suggestion._park.length ? ` -  ${suggestion._park[0].title}` : ''}</li>
           })}
         </ul>
       )
@@ -62,9 +62,14 @@ const Search = props => {
   };
 
   return (
-    <div className="c-search__wrapper">
+    <div className={`c-search__wrapper${props.variation === 'header' ? ' c-search__wrapper--header' : ''}`}>
       <form className="c-search" action="" onSubmit={onSearchSubmit}>
-        <input className="c-search__text-input" type="text" placeholder="Search Coasters" value={searchTerm} onChange={onInputChange}/>
+        <input 
+          className="c-search__text-input"
+          type="text" placeholder="Search Coasters"
+          value={searchTerm}
+          onChange={onInputChange}
+          autoFocus />
         <button className="c-search__submit" type="submit">
           <MagnifyingGlass />
         </button>

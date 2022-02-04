@@ -24,7 +24,7 @@ const CoasterDetail = () => {
 
   const getImageUrl = coaster => {
     const firstPart = process.env.REACT_APP_CMS_URL;
-    if (coaster.images.items.length) {
+    if (coaster.images.items.length && coaster.images.items[0]._image.length) {
       return firstPart + coaster.images.items[0]._image[0].attachment._urls['one-half'];
     }
     return null;

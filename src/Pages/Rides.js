@@ -28,28 +28,30 @@ const Rides = () => {
   const [alertContent, setAlertContent] = useState('');
   
   const fetchRidesHandler = useCallback(async page => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/rides?limit=10&page=${page}`, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
+    if (userContext.token) {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/rides?limit=10&page=${page}`, {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userContext.token}`
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Something went wrong!');
         }
-      });
-      if (!response.ok) {
-        throw new Error('Something went wrong!');
+        const data = await response.json();
+        setRides(data.rides);
+        setCurrentPage(data.currentPage);
+        setTotalPages(data.totalPages)
+        setTotalRides(data.totalRides);
+        window.scrollTo(0, 0);
+      } catch(e) {
+        console.log(e);
       }
-      const data = await response.json();
-      setRides(data.rides);
-      setCurrentPage(data.currentPage);
-      setTotalPages(data.totalPages)
-      setTotalRides(data.totalRides);
-      window.scrollTo(0, 0);
-    } catch(e) {
-      console.log(e);
+      setLoading(false);
     }
-    setLoading(false);
   }, [userContext]);
 
 
@@ -134,7 +136,7 @@ const Rides = () => {
   return loading ? <Loading /> : <div>
     {showAlert && <Alert content={alertContent} show={showAlert} />}
     {renderList()}
-    {rides.length ? <Pager currentPage={currentPage} totalPages={totalPages} onPrevious={fetchRidesHandler} onNext={fetchRidesHandler} /> : ''}
+    {rides.length && totalPages > 1 ? <Pager currentPage={currentPage} totalPages={totalPages} onPrevious={fetchRidesHandler} onNext={fetchRidesHandler} /> : ''}
   </div>
 };
 

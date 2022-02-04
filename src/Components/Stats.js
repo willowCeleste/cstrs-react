@@ -64,9 +64,6 @@ const Stats = props => {
                 </li>
               )
             })} />
-            // <ul>
-            //   {stats.coastersByAvgRating.map(item => <li>{item.avgRating} - {item.name}</li>)}
-            // </ul>
           )}
         </div>
       </section>

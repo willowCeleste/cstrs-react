@@ -40,7 +40,8 @@ const AddToList = () => {
       return {
         ...prev,
         itemId: newItem._id,
-        itemName: newItem.title
+        itemName: newItem.title,
+        parkName: newItem._park ? newItem._park[0].title : ''
       }
     });
   }, [fetchListsHandler, location.state.coaster]);

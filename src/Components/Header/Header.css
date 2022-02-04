@@ -67,3 +67,16 @@
   background: var(--light-grey);
   border-radius: 50%;
 }
+
+.c-header__search-toggle {
+  margin-left: auto;
+}
+
+.c-header__search-toggle .o-icon--search {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.c-header .o-icon--search path {
+  stroke: var(--white);
+}

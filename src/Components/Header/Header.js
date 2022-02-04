@@ -1,14 +1,18 @@
 import { useState } from "react";
 import * as React from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 
 import Navigation from "../Navigation/Navigation";
 import Search from "../Search/Search";
 import Hamburger from "../SVGs/Hamburger";
+import MagnifyingGlass from "../SVGs/MagnifyingGlass";
+
 import "./Header.css";
 
 const Header = props => {
+  const navigate = useNavigate();
   const [showNav, setShowNav] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
   const location = useLocation();
 
   // Close menu when we hit a new route
@@ -22,6 +26,17 @@ const Header = props => {
     });
   };
 
+  const toggleSearch = () => {
+    setShowSearch(prev => !prev);
+  };
+
+  const suggestionHandler = suggestion => {
+    console.log(suggestion.type);
+    const path = `/${suggestion.type === 'park' ? 'park' : 'coaster' }/${suggestion._id}`
+    navigate(path);
+    setShowSearch(false);
+  }
+
   return <header className="c-header">
     <div className="c-header__menu-bar">
       {props.showToggle && (
@@ -29,19 +44,15 @@ const Header = props => {
             <Hamburger />
           </span>
         )}
-      <span>cstrs</span>
+      {showSearch ? <Search showSuggestions={true} suggestHandler={suggestionHandler} variation="header" /> : <span>cstrs</span>}
       <div className={`c-header__nav-container ${showNav ? '' : 'c-header__nav-container--hidden'}`}>
         <Navigation />
-        <Search className="c-header__search" showSuggestions={false} />
       </div>
-      {props.user && (
-        <Link className="c-header__user-link" to="/profile">
-          <div className="c-header__user">
-            {props.user.username}
-          <div className="c-header__user-image"></div>
-        </div>
-        </Link>
-      )}
+      {!showSearch && (
+        <span className="c-header__search-toggle" onClick={toggleSearch}>
+          <MagnifyingGlass />
+        </span>
+      ) }
     </div>
   </header>
 };

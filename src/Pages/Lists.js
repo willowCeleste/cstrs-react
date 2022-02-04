@@ -2,10 +2,12 @@ import { useState, useEffect, useCallback, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../Context/UserContext";
 import Title from "../Components/Title/Title";
+import Loading from "../Components/Loading/Loading";
 import "./Lists.css";
 
 const Lists = () => {
   const [userContext, setUserContext] = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
   const [lists, setLists] = useState([]);
 
   const fetchListsHandler = useCallback(async () => {
@@ -24,29 +26,36 @@ const Lists = () => {
     }
     const data = await response.json();
     setLists(data.data);
+    setLoading(false);
   }, [userContext.token]);
 
   useEffect(() => {
     fetchListsHandler();
   }, [fetchListsHandler]);
 
-  return (
+  return loading ? <Loading /> : (
     <div>
       <Link to="/create-list"><button className="o-button__quick-add o-button--round">+</button></Link>
       <Title text="Lists" />
-      {lists.length && (
-        <ul>
-          {lists.map(list => {
-            return (
-              <li className="c-lists__list-item" key={list._id}>
-                <Link to="/list-detail" state={list._id}>{list.title}</Link>
-              </li>
-            )
-          })}
-        </ul>
+      {lists.length ? (
+        <div>
+          <ul>
+            {lists.map(list => {
+              return (
+                <li className="c-lists__list-item" key={list._id}>
+                  <Link className="c-lists__link" to="/list-detail" state={list._id}>{list.title}</Link>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      ) : (
+        <div>
+          <p>You havent added any lists yet!</p>
+        </div>
       )}
     </div>
-  );
+  )
 };
 
 export default Lists;

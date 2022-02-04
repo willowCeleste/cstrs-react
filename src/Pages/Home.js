@@ -17,26 +17,28 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchUserHandler = useCallback(async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/home`, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
+    if (userContext.token) {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/home`, {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userContext.token}`
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Something went wrong!');
+        } else {
+          const data = await response.json();
+          setUser(data.user);
+          setRecentRides(data.recentRides);
+          setStats(data.stats);
+          setLoading(false);
         }
-      });
-      if (!response.ok) {
-        throw new Error('Something went wrong!');
-      } else {
-        const data = await response.json();
-        setUser(data.user);
-        setRecentRides(data.recentRides);
-        setStats(data.stats);
-        setLoading(false);
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
     }
   }, [userContext]);
 
@@ -53,7 +55,7 @@ const Home = () => {
       date: ride.date,
       coaster: ride.coasterName,
       park: ride.parkName
-    }
+    };
 
     if (ride.image) {
       attrs['thumbnail'] = `${process.env.REACT_APP_CMS_URL}${ride.image}`;
