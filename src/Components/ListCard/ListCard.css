@@ -81,3 +81,21 @@
   height: 1.6rem;
   margin-top: 4px;
 }
+
+.c-list-card-enter {
+  opacity: 0;
+}
+
+.c-list-card-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+
+.c-list-card-exit {
+  opacity: 1;
+}
+
+.c-list-card-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}

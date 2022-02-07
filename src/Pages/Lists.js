@@ -11,7 +11,6 @@ const Lists = () => {
   const [lists, setLists] = useState([]);
 
   const fetchListsHandler = useCallback(async () => {
-    // temp for testing
     const response = await fetch(`${process.env.REACT_APP_API_URL}/lists`, {
       method: 'GET',
       credentials: 'include',

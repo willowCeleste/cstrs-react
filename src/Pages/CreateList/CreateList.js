@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Title from "../../Components/Title/Title";
 import Search from "../../Components/Search/Search";
 import ListCard from "../../Components/ListCard/ListCard";
@@ -62,25 +63,29 @@ const CreateList  = () => {
   };
 
   const submitHandler = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/lists/create`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
-        },
-        body: JSON.stringify(list)
-      });
-      if (!response.ok) {
-        throw new Error('Something went wrong!');
+    if (list.title) {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/lists/create`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${userContext.token}`
+          },
+          body: JSON.stringify(list)
+        });
+        if (!response.ok) {
+          throw new Error('Something went wrong!');
+        }
+        const data = await response.json();
+        console.log(data);
+        navigate('/list-detail', { state: data.list._id });
+      } catch (e) {
+        console.log(e);
+        alert('Internal server error');
       }
-      const data = await response.json();
-      console.log(data);
-      navigate('/list-detail', { state: data.list._id });
-    } catch (e) {
-      console.log(e);
-      alert('Internal server error');
+    } else {
+      alert('You must enter a title');
     }
   }
 
@@ -88,8 +93,8 @@ const CreateList  = () => {
     <div className="c-create-list">
       <Title text="Create a List" />
       <div className="c-form__field-wrapper">
-        <label className="c-form__label" htmlFor="title">Title</label>
-        <input className="o-input" type="text" onChange={titleChangeHandler}/>
+        <label className="c-form__label" htmlFor="title">Title*</label>
+        <input className="o-input" type="text" onChange={titleChangeHandler} required />
       </div>
       <div className="c-form__field-wrapper">
         <label className="c-form__label" htmlFor="listType">List Type</label>
@@ -104,9 +109,19 @@ const CreateList  = () => {
         <label htmlFor="makePrivate">Make list private?</label>
       </div>
       <Search showSuggestions={true} suggestHandler={handleSuggestionClick} />
-      <ul className="c-create-list__items">
-        {list.items.map(item => <li><ListCard title={item.itemName} subtitle={item.parkName} type="unranked" /></li>)}
-      </ul>
+      <TransitionGroup component="ul">
+        {list.items.map(item => {
+          console.log(item);
+          return (
+            <CSSTransition
+              timeout={500}
+              classNames="c-list-card"
+              key={item.itemId}>
+              <li><ListCard title={item.itemName} subtitle={item.parkName} type="unranked" /></li>
+            </CSSTransition>
+          )
+        })}
+      </TransitionGroup>
       <button className="c-button" type="submit" onClick={submitHandler}>Save List</button>
     </div>
   )

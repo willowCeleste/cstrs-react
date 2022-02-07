@@ -70,9 +70,12 @@ const Search = props => {
           value={searchTerm}
           onChange={onInputChange}
           autoFocus />
-        <button className="c-search__submit" type="submit">
-          <MagnifyingGlass />
-        </button>
+        {props.showIcon && (
+          <button className="c-search__submit" type="submit">
+            <MagnifyingGlass />
+          </button>
+        ) }
+        
       </form>
       {props.showSuggestions ? renderSuggestions() : '' }
     </div>

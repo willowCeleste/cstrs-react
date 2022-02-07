@@ -25,6 +25,12 @@ const Navigation = () => {
       console.log(e);
     }
   };
+
+  const renderProfileLink = () => {
+    return userContext.token 
+     ? <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/profile">Profile</Link></li>
+     : ''
+  }
   
   const renderLoginLogout = () => {
     return userContext.token ? 
@@ -42,6 +48,7 @@ const Navigation = () => {
         <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/lists">Lists</Link></li>
         <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/stats">Stats</Link></li>
         <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/info">Info</Link></li>
+        {renderProfileLink()}
         {renderLoginLogout()}
       </ul>
     </nav>  

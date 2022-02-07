@@ -2,6 +2,8 @@ import { useLocation } from "react-router";
 import { useState, useEffect, useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
+import { CSSTransition } from "react-transition-group";
+import { TransitionGroup } from "react-transition-group";
 import Title from "../../Components/Title/Title";
 import ListCard from "../../Components/ListCard/ListCard";
 import Button from "../../Components/Button/Button";
@@ -50,27 +52,37 @@ const ListDetail = props => {
     }
     return itemsArray.map(item => {
       return (
-        <li key={item.itemId}>
-          <ListCard 
-            id ={item.itemId} 
-            title={item.itemName} 
-            subtitle={item.parkName}
-            rank={item.rank} 
-            description={item.text} 
-            type={list.listType} 
-            completed={item.completed}
-            edit={edit}
-            onMove={moveItem}
-            onDelete={deleteItem} />
-        </li>
+        <CSSTransition 
+          key={item.itemId}
+          timeout={300}
+          classNames="fade">
+          <li>
+            <ListCard 
+              id ={item.itemId} 
+              title={item.itemName} 
+              subtitle={item.parkName}
+              rank={item.rank} 
+              description={item.text} 
+              type={list.listType} 
+              completed={item.completed}
+              edit={edit}
+              onMove={moveItem}
+              onDelete={deleteItem} />
+          </li>
+        </CSSTransition>
       )
     });
   };
 
   const renderList = listType => {
-    return listType === 'ranked' 
-      ? <ol className="o-list o-list--ordered">{renderItems(list.items)}</ol>
-      : <ul className="o-list o-list--unordered">{renderItems(list.items)}</ul>
+    return (
+      <TransitionGroup component={`ul`} className={`o-list${listType === 'ranked' ? ' o-list--ordered' : ' o-list--unordered'}`}>
+        {renderItems(list.items)}
+      </TransitionGroup>
+    )
+    // return listType === 'ranked' 
+    //   ? <ol className="o-list o-list--ordered">{renderItems(list.items)}</ol>
+    //   : <ul className="o-list o-list--unordered">{renderItems(list.items)}</ul>
   };
 
   const moveItem = (itemId, direction) => {
@@ -161,7 +173,7 @@ const ListDetail = props => {
       if (!response.ok) {
         alert("something went wrong");
       } else {
-        alert('List deleted successfully');
+        props.onNotification('List deleted successfully');
         navigate('/lists');
       }
     } catch (e) {
@@ -218,16 +230,24 @@ const ListDetail = props => {
 
   return list ? (
     <div className="c-list-detail">
-      {showSearch && (
+      <CSSTransition
+       in={showSearch}
+       timeout={300}
+       classNames="fade"
+       unmountOnExit>
         <div className="c-list-detail__modal">
           <div className="c-list-detail__modal-inner">
             <div className="c-list-detail__close-container">
-              <span className="c-list-detail__close-container" onClick={cancelSearchHandler}>X</span>
+              <span className="c-list-detail__close-container" onClick={cancelSearchHandler}>
+                <Cancel />
+              </span>
             </div>
-            <Search showSuggestions={true} suggestHandler={suggestionClickHandler} />
+            <div className="c-list-detail__search-container">
+              <Search showSuggestions showIcon={false} suggestHandler={suggestionClickHandler} />
+            </div>
           </div>
         </div>
-      )}
+      </CSSTransition>
       <div className="c-list-detail__title-container">
         <Title text={list.title} />
         <button className="c-list-detail__button" onClick={editToggleHandler}>

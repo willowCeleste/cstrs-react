@@ -3,6 +3,7 @@ import { UserContext } from "../Context/UserContext";
 import Title from "./Title/Title";
 import RideList from "./RideList/RideList";
 import StatCard from "./StatCard/StatCard";
+import './Stats.css';
 
 const Stats = props => { 
   const [userContext, setUserContext] = useContext(UserContext);
@@ -28,6 +29,18 @@ const Stats = props => {
     }
   }, [userContext.token]);
 
+  const formatAvg = number => {
+    if (number % 1 === 0) {
+      return number;
+    } else {
+      const decimalString = number.toString().split('.')[1];
+      if (decimalString.length === 1) {
+        return number;
+      }
+      return Math.round((number + Number.EPSILON) * 100) / 100;
+    }
+  }
+
   useEffect(() => {
     fetchStatsHandler();
   }, [fetchStatsHandler]);
@@ -37,15 +50,15 @@ const Stats = props => {
       <Title text="Stats" />
       <section>
         <div>
-          <Title size="small" text="Most Ridden Coasters" />
+          <Title size="small" text="Most Ridden Coasters" weight="bold" />
           {(stats && stats.ridesByCoaster.length) && (
             <RideList items={stats.ridesByCoaster.map(item => {
               return (
-                <li key={item._id}><StatCard title={item.name} subtitle={item.parkName} value={item.count} /></li>
+                <StatCard key={item._id} title={item.name} subtitle={item.parkName} value={item.count} />
               )
             })} />
           )}
-          <Title size="small" text="Parks With Most Rides" />
+          <Title size="small" text="Parks With Most Rides" weight="bold" />
           {(stats && stats.ridesByPark.length) && (
             <RideList items={stats.ridesByPark.map(item => {
               return (
@@ -55,12 +68,12 @@ const Stats = props => {
               )
             })} />
           )}
-          <Title size="small" text="Highest Average Rating" />
+          <Title size="small" text="Highest Average Rating" weight="bold" />
           {(stats && stats.coastersByAvgRating.length) && (
             <RideList items={stats.coastersByAvgRating.map(item => {
               return (
                 <li key={item._id}>
-                  <StatCard title={item.name} value={item.avgRating} />
+                  <StatCard title={item.name} value={formatAvg(item.avgRating)} />
                 </li>
               )
             })} />

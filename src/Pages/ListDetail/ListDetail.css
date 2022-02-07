@@ -25,17 +25,35 @@
 .c-list-detail__modal-inner {
   margin: 2rem;
   padding: 1rem;
-  background: var(--white);
+  /* background: var(--white); */
 }
 
 .c-list-detail__close-container {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 0.5rem;
+  background: transparent;
+}
+
+.c-list-detail__close-container svg {
+  fill: var(--white);
+  stroke: var(--white);
 }
 
 .c-list-detail__edit-controls {
   display: flex;
   align-items: center;
   margin-bottom: 1.2rem;
+}
+
+.c-list-detail__search-container {
+  background: var(--white);
+}
+
+.c-list-detail__search-container .c-search__wrapper {
+  padding: 1rem;
+}
+
+.c-list-detail__search-container .c-search__results {
+  border: none;
 }

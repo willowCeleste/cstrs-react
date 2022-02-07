@@ -29,6 +29,7 @@ const Credits = () => {
   });
 
   const fetchCreditsHandler = useCallback(async page => {
+    setLoading(true);
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/credits?limit=10&page=${page}`, {
         method: 'GET',
@@ -47,10 +48,10 @@ const Credits = () => {
       setCurrentPage(data.currentPage);
       setTotalPages(data.totalPages);
       setTotalCredits(data.totalCredits);
-      setLoading(false);
     } catch (e) {
       console.log(e);
     }
+    setLoading(false);
   }, [userContext.token]);
 
   const renderCredits = () => {
@@ -75,7 +76,7 @@ const Credits = () => {
   };
 
   const renderProgress = () => {
-    if (credits.length) {
+    if (credits.length && currentPage === 1) {
       return (
         <div>
           <p className="c-credits__progress-message">You've got {totalCredits} credits! Just {milestone - totalCredits} more until {milestone}!</p>

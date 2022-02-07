@@ -1,7 +1,6 @@
 .c-progress-bar {
   width: 100%;
   height: 1rem;
-  
   background-color: lightgray;
 }
 
@@ -9,6 +8,7 @@
   height: 1rem;
   background-color: #DC9E82;
   transition: all 1.5s ease-in-out;
+  width: 0;
 }
 
 .c-progress-bar__labels {

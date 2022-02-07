@@ -9,3 +9,11 @@
 .c-title--small {
   font-size: var(--large);
 }
+
+.c-title--thin {
+  font-weight: 300;
+}
+
+.c-title--bold {
+  font-weight: 500;
+}

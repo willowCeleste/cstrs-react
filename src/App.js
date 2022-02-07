@@ -1,7 +1,7 @@
-import { Routes, Route } from 'react-router-dom';
-import { useCallback, useContext, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from './Context/UserContext'
-import Protected from './Components/Protected/Protected';
+import { CSSTransition } from 'react-transition-group';
 import Header from './Components/Header/Header';
 import Home from './Pages/Home';
 import Rides from './Pages/Rides';
@@ -21,10 +21,13 @@ import AddToList from './Pages/AddToList/AddToList';
 import CreateList from './Pages/CreateList/CreateList';
 import Profile from './Pages/Profile/Profile';
 import ParkDetail from './Pages/ParkDetail/ParkDetail';
+import Snackbar from './Components/Snackbar/Snackbar';
 import './App.css';
 
 function App() {
   const [userContext, setUserContext] = useContext(UserContext);
+  const [notification, setNotification] = useState('');
+  const [showSnackbar, setShowSnackbar] = useState(false);
   const verifyUser = useCallback(async () => {
     try {
       fetch(`${process.env.REACT_APP_API_URL}/refreshToken`, {
@@ -40,16 +43,25 @@ function App() {
         } else {
           setUserContext(oldValues => {
             return { ...oldValues, token: null }
-          })
+          });
         }
         // renew the auth token every 5 mins
-        setTimeout(verifyUser, 5 * 60 * 1000)
+        setTimeout(verifyUser, 5 * 60 * 1000);
       })
     } catch (e) {
       console.log(e);
       throw new Error('Something went wrong');
     }
   }, [setUserContext]);
+
+  const handleNotification = message => {
+    setNotification(message);
+    setShowSnackbar(true);
+    setTimeout(() => {
+      setShowSnackbar(false);
+      setNotification('');
+    }, 3000);
+  }
 
   useEffect(() => {
     verifyUser();
@@ -58,92 +70,75 @@ function App() {
   const routes = [
     {
       path: 'sign-up',
-      element: <Register />,
-      protected: false
+      element: <Register />
     },
     {
       path: 'login',
-      element: <Login />,
-      protected: false
+      element: <Login />
     },
     {
       path: '/coaster/:id',
-      element: <CoasterDetail />,
-      protected: true
+      element: <CoasterDetail />
     },
     {
       path: 'rides',
-      element: <Rides />,
-      protected: true
+      element: <Rides />
     },
     {
       path: 'credits',
-      element: <Credits />,
-      protected: true
+      element: <Credits />
     },
     {
       path: 'search',
-      element: <SearchResults />,
-      protected: true
+      element: <SearchResults />
     },
     {
       path: 'lists',
-      element: <Lists />,
-      protected: true
+      element: <Lists />
     },
     {
       path: 'list-detail',
-      element: <ListDetail />
+      element: <ListDetail onNotification={handleNotification} />
     },
     {
       path: 'addRide',
-      element: <AddRide />,
-      protected: true
+      element: <AddRide />
     },
     {
       path: 'edit-ride',
-      element: <EditRide />,
-      protected: true
+      element: <EditRide />
     },
     {
       path: '/rides/:id',
-      element: <RideDetail />,
-      protected: true
+      element: <RideDetail />
     },
     {
       path: '/stats',
-      element: <Stats />,
-      protected: true
+      element: <Stats />
     },
     {
       path: '/info',
-      element: <Info />,
-      protected: false
+      element: <Info />
     },
     {
       path: '/add-to-list',
-      element: <AddToList />,
-      protected: true
+      element: <AddToList />
     },
     {
       path: '/create-list',
-      element: <CreateList />,
-      protected: true
+      element: <CreateList />
     },
     {
       path: '/profile',
-      element: <Profile />,
-      protected: true
+      element: <Profile onNotification={handleNotification} />
     },
     {
       path: '/park/:id',
-      element: <ParkDetail />,
-      protected: true
+      element: <ParkDetail />
     },
     {
       path: '/',
-      element: <Home />,
-      protected: true
+      element: <Home />
     }
   ];
 
@@ -151,11 +146,19 @@ function App() {
     <div className="c-app">
       <Header showToggle={userContext.token !== null } user={userContext.user} />
       <div className="c-app__content">
-      <Routes>
-        {routes.map(route => {
-          return route.protected ? <Route key={route.path} path={route.path} element={<Protected>{route.element}</Protected>}/> : <Route path={route.path} element={route.element} />
-        })}
-      </Routes>
+        <Routes>
+          {routes.map(route => {
+            return <Route key={route.path} path={route.path} element={route.element}/>
+          })}
+        </Routes>
+        <CSSTransition
+          in={showSnackbar}
+          timeout={300}
+          classNames="fade"
+          unmountOnExit>
+          <Snackbar message={notification} />
+        </CSSTransition>
+   
       </div>
     </div>
   );

@@ -7,10 +7,6 @@
   justify-content: space-between;
 }
 
-.c-header .c-search {
-  margin: 0 1rem;
-}
-
 .c-header__menu-bar {
   display: flex;
   position: relative;

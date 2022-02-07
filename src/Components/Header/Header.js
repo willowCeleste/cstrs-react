@@ -1,6 +1,7 @@
 import { useState } from "react";
 import * as React from "react";
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
 
 import Navigation from "../Navigation/Navigation";
 import Search from "../Search/Search";
@@ -31,7 +32,6 @@ const Header = props => {
   };
 
   const suggestionHandler = suggestion => {
-    console.log(suggestion.type);
     const path = `/${suggestion.type === 'park' ? 'park' : 'coaster' }/${suggestion._id}`
     navigate(path);
     setShowSearch(false);
@@ -45,9 +45,18 @@ const Header = props => {
           </span>
         )}
       {showSearch ? <Search showSuggestions={true} suggestHandler={suggestionHandler} variation="header" /> : <span>cstrs</span>}
-      <div className={`c-header__nav-container ${showNav ? '' : 'c-header__nav-container--hidden'}`}>
+      <CSSTransition
+        in={showNav}
+        timeout={300}
+        unmountOnExit
+        classNames="fade">
+        <div className="c-header__nav-container">
+          <Navigation />
+        </div>
+      </CSSTransition>
+      {/* <div className={`c-header__nav-container ${showNav ? '' : 'c-header__nav-container--hidden'}`}>
         <Navigation />
-      </div>
+      </div> */}
       {!showSearch && (
         <span className="c-header__search-toggle" onClick={toggleSearch}>
           <MagnifyingGlass />

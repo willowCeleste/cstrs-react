@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import Title from "../../Components/Title/Title";
 import RideCard from "../../Components/RideCard/RideCard";
+import './ParkDetail.css';
 
 const ParkDetail = () => {
   const { id } = useParams();
@@ -28,9 +30,13 @@ const ParkDetail = () => {
     if (park._coasters.length) {
       return (
         <ul>
-          {park._coasters.map(coaster => {
+          {park._coasters.sort((a, b) => {
+            return (a.title > b.title) ? 1 : -1;
+          }).map(coaster => {
             return <li key={coaster._id}>
-              <RideCard coaster={coaster.title} thumbnail={coaster.image ? `${process.env.REACT_APP_CMS_URL}/${coaster.image}` : ''} />
+              <Link to={`/coaster/${coaster._id}`}>
+                <RideCard coaster={coaster.title} thumbnail={coaster.image ? `${process.env.REACT_APP_CMS_URL}/${coaster.image}` : ''} />
+              </Link>
             </li>
           })}
         </ul>
@@ -39,10 +45,11 @@ const ParkDetail = () => {
   }
 
   return (
-    <div>
+    <div className="c-park-detail">
       {park && (
         <div>
           <Title text={park.title} />
+          {park.city && park.state && <Title text={`${park.city}, ${park.state}`} size="small" weight="thin" />}
           {renderCoasterList()}
         </div>
       )}
