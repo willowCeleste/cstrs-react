@@ -4,7 +4,9 @@ const uiSlice = createSlice({
   name: 'ui',
   initialState: {
     showNav: false,
-    showLoading: false
+    showLoading: false,
+    showAlert: false,
+    alertContent: ''
   },
   reducers: {
     toggleNav(state) {
@@ -20,6 +22,13 @@ const uiSlice = createSlice({
     },
     hideLoading(state) {
       state.showLoading = false;
+    },
+    showAlert(state, action) {
+      state.showAlert = true;
+      state.alertContent = action.payload;
+    },
+    hideAlert(state) {
+      state.showAlert = false;
     }
   }
 });

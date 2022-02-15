@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext, useCallback } from "react";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { uiActions } from "../../store/ui";
 import "./AddRide.css";
 import { UserContext } from "../../Context/UserContext";
 import Title from "../../Components/Title/Title";
@@ -10,6 +12,7 @@ import Search from "../../Components/Search/Search";
 
 const AddRide = props => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
   const [userContext, setUserContext] = useContext(UserContext);
   const [user, setUser] = useState(null);
@@ -74,6 +77,7 @@ const AddRide = props => {
         navigate('/', { state: {
           ride: ride
         }});
+        dispatch(uiActions.showAlert(`Logged ride for ${ride.coasterName}`))
       }
     } catch (e) {
       console.log(e);

@@ -2,6 +2,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from './Context/UserContext'
 import { CSSTransition } from 'react-transition-group';
+import { useSelector } from 'react-redux';
 import Header from './Components/Header/Header';
 import Home from './Pages/Home';
 import Rides from './Pages/Rides';
@@ -21,13 +22,14 @@ import AddToList from './Pages/AddToList/AddToList';
 import CreateList from './Pages/CreateList/CreateList';
 import Profile from './Pages/Profile/Profile';
 import ParkDetail from './Pages/ParkDetail/ParkDetail';
-import Snackbar from './Components/Snackbar/Snackbar';
+import Alert from './Components/Alert/Alert';
 import './App.css';
 
 function App() {
+  const showAlert = useSelector(state => state.ui.showAlert);
+  const alertContent = useSelector(state => state.ui.alertContent);
   const [userContext, setUserContext] = useContext(UserContext);
   const [notification, setNotification] = useState('');
-  const [showSnackbar, setShowSnackbar] = useState(false);
   const verifyUser = useCallback(async () => {
     try {
       fetch(`${process.env.REACT_APP_API_URL}/refreshToken`, {
@@ -53,15 +55,6 @@ function App() {
       throw new Error('Something went wrong');
     }
   }, [setUserContext]);
-
-  const handleNotification = message => {
-    setNotification(message);
-    setShowSnackbar(true);
-    setTimeout(() => {
-      setShowSnackbar(false);
-      setNotification('');
-    }, 3000);
-  }
 
   useEffect(() => {
     verifyUser();
@@ -98,7 +91,7 @@ function App() {
     },
     {
       path: 'list-detail',
-      element: <ListDetail onNotification={handleNotification} />
+      element: <ListDetail />
     },
     {
       path: 'addRide',
@@ -130,7 +123,7 @@ function App() {
     },
     {
       path: '/profile',
-      element: <Profile onNotification={handleNotification} />
+      element: <Profile />
     },
     {
       path: '/park/:id',
@@ -151,12 +144,13 @@ function App() {
             return <Route key={route.path} path={route.path} element={route.element}/>
           })}
         </Routes>
+        
         <CSSTransition
-          in={showSnackbar}
+          in={showAlert}
           timeout={300}
           classNames="fade"
           unmountOnExit>
-          <Snackbar message={notification} />
+            <Alert message={alertContent} />
         </CSSTransition>
       </div>
     </div>
