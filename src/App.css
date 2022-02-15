@@ -62,6 +62,10 @@ h1, h2, h3, h4 {
   border: 1px solid var(--site-secondary);
 }
 
+.c-form__label ~ .o-input--textarea {
+  margin-top: 0.5rem;
+}
+
 .o-input:focus {
   border-color: var(--site-primary-alt);
   border-width: 2px;
@@ -216,7 +220,6 @@ h1, h2, h3, h4 {
 }
 
 .fade-enter-active {
-  /* display: block; */
   opacity: 1;
   transition: opacity 300ms;
 }

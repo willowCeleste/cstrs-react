@@ -1,0 +1,7 @@
+.c-add-to-list__select-label {
+  color: var(--text-primary);
+}
+
+.c-add-to-list__item-name {
+  color: var(--site-primary);
+}

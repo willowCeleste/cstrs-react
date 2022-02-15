@@ -1,8 +1,10 @@
 import { useState } from "react";
 import * as React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
+import { useSelector, useDispatch } from 'react-redux';
 
+import { uiActions } from "../../store/ui";
 import Navigation from "../Navigation/Navigation";
 import Search from "../Search/Search";
 import Hamburger from "../SVGs/Hamburger";
@@ -11,20 +13,18 @@ import MagnifyingGlass from "../SVGs/MagnifyingGlass";
 import "./Header.css";
 
 const Header = props => {
+  const dispatch = useDispatch();
+  const showNav = useSelector(state => state.ui.showNav);
   const navigate = useNavigate();
-  const [showNav, setShowNav] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const location = useLocation();
 
   // Close menu when we hit a new route
   React.useEffect(() => {
-    setShowNav(false);
-  }, [location]);
+    dispatch(uiActions.hideNav());
+  }, [dispatch]);
 
   const toggleNav = () => {
-    setShowNav(prevState => {
-      setShowNav(!prevState);
-    });
+    dispatch(uiActions.toggleNav());
   };
 
   const toggleSearch = () => {
@@ -39,12 +39,13 @@ const Header = props => {
 
   return <header className="c-header">
     <div className="c-header__menu-bar">
+      {console.log('show nav', showNav)}
       {props.showToggle && (
           <span className="c-header__nav-toggle" onClick={toggleNav}>
             <Hamburger />
           </span>
         )}
-      {showSearch ? <Search showSuggestions={true} suggestHandler={suggestionHandler} variation="header" /> : <span>cstrs</span>}
+      {showSearch ? <Search showSuggestions showIcon suggestHandler={suggestionHandler} variation="header" /> : <span>cstrs</span>}
       <CSSTransition
         in={showNav}
         timeout={300}

@@ -3,6 +3,7 @@ import { useState, useCallback, useContext, useEffect } from "react";
 import { UserContext } from "../../Context/UserContext";
 import Title from "../../Components/Title/Title"
 import Button from "../../Components/Button/Button";
+import './AddToList.css';
 
 const AddToList = () => {
   const location = useLocation();
@@ -16,7 +17,6 @@ const AddToList = () => {
   });
 
   const fetchListsHandler = useCallback(async () => {
-    // temp for testing
     const response = await fetch(`${process.env.REACT_APP_API_URL}/lists`, {
       method: 'GET',
       credentials: 'include',
@@ -75,19 +75,20 @@ const AddToList = () => {
   }
 
   return (
-    <div>
+    <div className="c-add-to-list">
       <Title text="Add To List!" />
       <form onSubmit={submitHandler}>
-        <div>
-          <label for="lists">Adding {item.itemName} to </label>
-          <select name="lists" id="lists" onChange={listSelectChangeHandler}>
+        <div className="c-form__field-wrapper">
+          <label className="c-form__label c-add-to-list__select-label" for="lists">Adding <span className="c-add-to-list__item-name">{item.itemName}</span> to </label>
+          <select className="o-input o-input__select" name="lists" id="lists" onChange={listSelectChangeHandler}>
             <option value="">Select List</option>
             {lists.map(list => <option value={list._id}>{list.title}</option>)}
           </select>
         </div>
-        <div>
-          <label for="text" />
-          <textarea 
+        <div className="c-form__field-wrapper">
+          <label className="c-form__label" for="text">Description</label>
+          <textarea
+            className="o-input o-input--textarea"
             name="text" 
             id="text" 
             cols="30" 

@@ -5,14 +5,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { UserProvider } from './Context/UserContext';
+import { Provider } from 'react-redux';
+import store from './store';
 
 ReactDOM.render(
   <React.StrictMode>
-    <UserProvider>
-      <Router>
-        <App />
-      </Router>
-    </UserProvider>
+    <Provider store={store}>
+      <UserProvider>
+        <Router>
+          <App />
+        </Router>
+      </UserProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -80,9 +80,9 @@ const Home = () => {
     </section>
     <Title text="Quick Stats" /> 
     <section className="c-home__quick-stats">
-      <Stat stat={stats.newCreditsForYear} text="new credits this year" />
-      <Stat stat={stats.ridesThisYear} text="total rides this year" />
-      <Stat stat={stats.parksThisYear} text="parks visited this year" />
+      <Stat stat={stats.newCreditsForYear} text="credits" />
+      <Stat stat={stats.ridesThisYear} text="total rides" />
+      <Stat stat={stats.parksThisYear} text="parks visited" />
     </section>
   </div>
 };

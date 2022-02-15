@@ -62,9 +62,7 @@ const Stats = props => {
           {(stats && stats.ridesByPark.length) && (
             <RideList items={stats.ridesByPark.map(item => {
               return (
-                <li key={item._id}>
-                  <StatCard title={item.name} value={item.count} />
-                </li>
+                <StatCard key={item._id} title={item.name} value={item.count} />
               )
             })} />
           )}
@@ -72,9 +70,7 @@ const Stats = props => {
           {(stats && stats.coastersByAvgRating.length) && (
             <RideList items={stats.coastersByAvgRating.map(item => {
               return (
-                <li key={item._id}>
-                  <StatCard title={item.name} value={formatAvg(item.avgRating)} />
-                </li>
+                <StatCard key={item._id} title={item.name} value={formatAvg(item.avgRating)} />
               )
             })} />
           )}
