@@ -1,10 +1,12 @@
 .c-app {
+  position: relative;
   min-height: 100vh;
 }
 
 .c-app__content {
   position: relative;
   padding: 1rem;
+  min-height: 100vh;
 }
 
 /* Resets */

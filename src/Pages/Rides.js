@@ -1,12 +1,13 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import { UserContext } from '../Context/UserContext';
+import { uiActions } from '../store/ui';
+import { useDispatch } from 'react-redux';
 import ListSwipeAction from '../Components/ListSwipeAction/ListSwipeAction';
 import RideCard from '../Components/RideCard/RideCard';
 import ConfirmAlert from '../Components/ConfirmAlert/ConfirmAlert';
 import Title from '../Components/Title/Title';
 import Pager from '../Components/Pager/Pager';
-import Loading from '../Components/Loading/Loading';
 import Alert from '../Components/Alert/Alert';
 import { SwipeableList, SwipeableListItem } from '@sandstreamdev/react-swipeable-list';
 import '@sandstreamdev/react-swipeable-list/dist/styles.css';
@@ -17,9 +18,9 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 
 const Rides = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [userContext, setUserContext] = useContext(UserContext);
-  const [loading, setLoading] = useState(true);
   const [rides, setRides] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -29,6 +30,7 @@ const Rides = () => {
   
   const fetchRidesHandler = useCallback(async page => {
     if (userContext.token) {
+      dispatch(uiActions.showLoading());
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/rides?limit=10&page=${page}`, {
           method: 'GET',
@@ -50,9 +52,9 @@ const Rides = () => {
       } catch(e) {
         console.log(e);
       }
-      setLoading(false);
+      dispatch(uiActions.hideLoading())
     }
-  }, [userContext]);
+  }, [dispatch, userContext.token]);
 
 
   useEffect(() => {
@@ -100,9 +102,7 @@ const Rides = () => {
   };
 
   const renderList = () => {
-    if (loading) {
-      return <div>Loading!</div>
-    } else if (rides.length) {
+    if (rides.length) {
       return (
         <>
           <Title text="Rides" />
@@ -129,11 +129,11 @@ const Rides = () => {
         </>
       )
     } else {
-      return <p>You haven't recorded any rides yet!</p>
+      return <p>You haven't recorded any rides yet</p>
     }
   };
 
-  return loading ? <Loading /> : <div>
+  return <div>
     {showAlert && <Alert content={alertContent} show={showAlert} />}
     {renderList()}
     {rides.length && totalPages > 1 ? <Pager currentPage={currentPage} totalPages={totalPages} onPrevious={fetchRidesHandler} onNext={fetchRidesHandler} /> : ''}

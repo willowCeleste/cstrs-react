@@ -158,7 +158,6 @@ function App() {
           unmountOnExit>
           <Snackbar message={notification} />
         </CSSTransition>
-   
       </div>
     </div>
   );

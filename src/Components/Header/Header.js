@@ -39,7 +39,6 @@ const Header = props => {
 
   return <header className="c-header">
     <div className="c-header__menu-bar">
-      {console.log('show nav', showNav)}
       {props.showToggle && (
           <span className="c-header__nav-toggle" onClick={toggleNav}>
             <Hamburger />
@@ -55,9 +54,6 @@ const Header = props => {
           <Navigation />
         </div>
       </CSSTransition>
-      {/* <div className={`c-header__nav-container ${showNav ? '' : 'c-header__nav-container--hidden'}`}>
-        <Navigation />
-      </div> */}
       {!showSearch && (
         <span className="c-header__search-toggle" onClick={toggleSearch}>
           <MagnifyingGlass />

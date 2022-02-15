@@ -2,6 +2,9 @@ import { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { uiActions } from '../store/ui';
 import RideList from '../Components/RideList/RideList';
 import RideCard from '../Components/RideCard/RideCard';
 import Title from '../Components/Title/Title';
@@ -10,14 +13,16 @@ import Stat from '../Components/Stat/Stat';
 
 const Home = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const showLoading = useSelector(state => state.ui.showLoading);
   const [user, setUser] = useState(null);
   const [userContext, setUserContext] = useContext(UserContext);
   const [recentRides, setRecentRides] = useState([]);
   const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   const fetchUserHandler = useCallback(async () => {
     if (userContext.token) {
+      dispatch(uiActions.showLoading());
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/home`, {
           method: 'GET',
@@ -34,13 +39,13 @@ const Home = () => {
           setUser(data.user);
           setRecentRides(data.recentRides);
           setStats(data.stats);
-          setLoading(false);
         }
       } catch (e) {
         console.log(e);
       }
+      dispatch(uiActions.hideLoading());
     }
-  }, [userContext]);
+  }, [userContext.token, dispatch]);
 
   useEffect(() => {
     if (!userContext.token) {
@@ -72,18 +77,20 @@ const Home = () => {
     return recentRides.length ? <RideList items={mappedRides} /> : <div>You haven't added any rides yet!</div>;
   };
  
-  return loading ? <Loading /> : <div className="c-home">
+  return <div className="c-home">
+    { console.log('LOADING', showLoading) }
+    { showLoading && <Loading /> }
     <Link to="/addRide"><button className="o-button__quick-add o-button--round">+</button></Link>
     <section>
       <Title text="Recent Rides"/>
       {renderRecentRides()}
     </section>
     <Title text="Quick Stats" /> 
-    <section className="c-home__quick-stats">
+    {/* <section className="c-home__quick-stats">
       <Stat stat={stats.newCreditsForYear} text="credits" />
       <Stat stat={stats.ridesThisYear} text="total rides" />
       <Stat stat={stats.parksThisYear} text="parks visited" />
-    </section>
+    </section> */}
   </div>
 };
 
