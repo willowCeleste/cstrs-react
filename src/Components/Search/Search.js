@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useHttp from "../../hooks/use-http";
+import { getSearchSuggestions } from "../../lib/cms";
 import "./Search.css";
 import MagnifyingGlass from "../SVGs/MagnifyingGlass";
 
 const Search = props => {
+  const { sendRequest, status, data: loadedSuggestions, error } = useHttp(getSearchSuggestions, true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
+  // const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
 
   const onSearchSubmit = async (e) => {
@@ -28,29 +31,31 @@ const Search = props => {
     setSearchTerm(value);
     if (props.showSuggestions) {
       if (value.length >=3) {
-        try {
-          const response = await fetch(`${process.env.REACT_APP_CMS_URL}/api/v1/search/suggestion?s=${value}${props.type ? `&type=${props.type}` : ''}`);
-          const data = await response.json();
-          setSuggestions(data.length ? data : [{ title: 'No suggestions :(', _id: 'none'}])
-        } catch (e) {
-          console.log(e);
-        }
+        // try {
+        //   const response = await fetch(`${process.env.REACT_APP_CMS_URL}/api/v1/search/suggestion?s=${value}${props.type ? `&type=${props.type}` : ''}`);
+        //   const data = await response.json();
+        //   setSuggestions(data.length ? data : [{ title: 'No suggestions :(', _id: 'none'}])
+        // } catch (e) {
+        //   console.log(e);
+        // }
+        const results = await sendRequest(value);
+        console.log('results!', results);
       } else {
-        setSuggestions([]);
+        // setSuggestions([]);
       }
     }
   };
 
   const suggestionClickHandler = suggestion => {
     props.suggestHandler(suggestion);
-    setSuggestions([]);
+    // setSuggestions([]);
   }
 
   const renderSuggestions = () => {
-    if (suggestions.length) {
+    if (loadedSuggestions && loadedSuggestions.length) {
       return (
         <ul className="c-search__results">
-          {suggestions.map(suggestion => {
+          {loadedSuggestions.map(suggestion => {
             if (suggestion._id === 'none') {
               return <li key={suggestion._id}>{suggestion.title}</li>
             }

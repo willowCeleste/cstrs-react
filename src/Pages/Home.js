@@ -15,8 +15,7 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const showLoading = useSelector(state => state.ui.showLoading);
-  const [user, setUser] = useState(null);
-  const [userContext, setUserContext] = useContext(UserContext);
+  const [userContext] = useContext(UserContext);
   const [recentRides, setRecentRides] = useState([]);
   const [stats, setStats] = useState(null);
 
@@ -36,7 +35,6 @@ const Home = () => {
           throw new Error('Something went wrong!');
         } else {
           const data = await response.json();
-          setUser(data.user);
           setRecentRides(data.recentRides);
           setStats(data.stats);
         }

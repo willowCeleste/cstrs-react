@@ -1,5 +1,4 @@
 .c-navigation {
-  /* display: none; */
   margin-bottom: 1rem;
   background: var(--site-secondary);
 }
@@ -12,7 +11,6 @@
 
 .c-navigation__list-item {
   margin-right: 1rem;
-  /* padding: 1rem; */
 }
 
 .c-navigation__link {
@@ -23,4 +21,8 @@
   color: var(--white);
   border: none;
   background: var(--site-secondary);
+}
+
+.c-navigation__link.active {
+  text-decoration: underline;
 }

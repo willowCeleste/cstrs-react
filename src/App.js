@@ -143,6 +143,9 @@ function App() {
           {routes.map(route => {
             return <Route key={route.path} path={route.path} element={route.element}/>
           })}
+          {/* <Route path="*">
+
+          </Route> */}
         </Routes>
         
         <CSSTransition

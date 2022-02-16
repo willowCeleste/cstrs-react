@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../../Context/UserContext";
 import { useDispatch } from 'react-redux';
@@ -49,12 +49,12 @@ const Navigation = () => {
   return (
     <nav className="c-navigation">
       <ul className="c-navigation__list">
-        <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/" onClick={dismissNav}>Home</Link></li>
-        <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/rides" onClick={dismissNav}>Rides</Link></li>
-        <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/credits" onClick={dismissNav}>Credits</Link></li>
-        <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/lists" onClick={dismissNav}>Lists</Link></li>
-        <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/stats" onClick={dismissNav}>Stats</Link></li>
-        <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/info" onClick={dismissNav}>Info</Link></li>
+        <li className="c-navigation__list-item"><NavLink className="c-navigation__link" to="/" onClick={dismissNav}>Home</NavLink></li>
+        <li className="c-navigation__list-item"><NavLink className="c-navigation__link" to="/rides" onClick={dismissNav}>Rides</NavLink></li>
+        <li className="c-navigation__list-item"><NavLink className="c-navigation__link" to="/credits" onClick={dismissNav}>Credits</NavLink></li>
+        <li className="c-navigation__list-item"><NavLink className="c-navigation__link" to="/lists" onClick={dismissNav}>Lists</NavLink></li>
+        <li className="c-navigation__list-item"><NavLink className="c-navigation__link" to="/stats" onClick={dismissNav}>Stats</NavLink></li>
+        <li className="c-navigation__list-item"><NavLink className="c-navigation__link" to="/info" onClick={dismissNav}>Info</NavLink></li>
         {renderProfileLink()}
         {renderLoginLogout()}
       </ul>
