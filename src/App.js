@@ -3,6 +3,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from './Context/UserContext'
 import { CSSTransition } from 'react-transition-group';
 import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router';
 import Header from './Components/Header/Header';
 import Home from './Pages/Home';
 import Rides from './Pages/Rides';
@@ -24,9 +25,12 @@ import CreateList from './Pages/CreateList/CreateList';
 import Profile from './Pages/Profile/Profile';
 import ParkDetail from './Pages/ParkDetail/ParkDetail';
 import Alert from './Components/Alert/Alert';
+import Welcome from './Pages/Welcome/Welcome';
 import './App.css';
+import Edit from './Components/SVGs/Edit';
 
 function App() {
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const showAlert = useSelector(state => state.ui.showAlert);
   const alertContent = useSelector(state => state.ui.alertContent);
   const [userContext, setUserContext] = useContext(UserContext);
@@ -61,96 +65,36 @@ function App() {
     verifyUser();
   }, [verifyUser]);
 
-  const routes = [
-    {
-      path: 'sign-up',
-      element: <Register />
-    },
-    {
-      path: 'login',
-      element: <Login />
-    },
-    {
-      path: '/coaster/:id',
-      element: <CoasterDetail />
-    },
-    {
-      path: 'rides',
-      element: <Rides />
-    },
-    {
-      path: 'credits',
-      element: <Credits />
-    },
-    // {
-    //   path: 'search',
-    //   element: <SearchResults />
-    // },
-    {
-      path: 'lists',
-      element: <Lists />
-    },
-    {
-      path: 'list-detail',
-      element: <ListDetail />
-    },
-    {
-      path: 'addRide',
-      element: <AddRide />
-    },
-    {
-      path: 'edit-ride',
-      element: <EditRide />
-    },
-    {
-      path: '/rides/:id',
-      element: <RideDetail />
-    },
-    {
-      path: '/stats',
-      element: <Stats />
-    },
-    {
-      path: '/info',
-      element: <Info />
-    },
-    {
-      path: '/add-to-list',
-      element: <AddToList />
-    },
-    {
-      path: '/create-list',
-      element: <CreateList />
-    },
-    {
-      path: '/profile',
-      element: <Profile />
-    },
-    {
-      path: '/park/:id',
-      element: <ParkDetail />
-    },
-    {
-      path: '/search',
-      element: <Search />
-    },
-    {
-      path: '/',
-      element: <Home />
-    }
-  ];
+  const protectedRoute = (path, component) => {
+    return <Route path={path} element={ isLoggedIn ? component : <Navigate to="/welcome" /> }/>;
+  };
 
   return (
     <div className="c-app">
       <Header showToggle={userContext.token !== null } user={userContext.user} />
       <div className="c-app__content">
+        {/* ---- Routes ---- */}
         <Routes>
-          {routes.map(route => {
-            return <Route key={route.path} path={route.path} element={route.element}/>
-          })}
-          {/* <Route path="*">
-
-          </Route> */}
+          <Route path="/welcome" element={<Welcome />} />
+          { !isLoggedIn && <Route path="/login" element={<Login />} /> }
+          { !isLoggedIn && <Route path="/sign-up" element={<Register />} /> }
+          { protectedRoute('/rides', <Rides />) }
+          { protectedRoute('/credits', <Credits />) }
+          { protectedRoute('/lists', <Lists />) }
+          { protectedRoute('/list-detail', <ListDetail />) }
+          { protectedRoute('/addRide', <AddRide />) }
+          { protectedRoute('/edit-ride', <Edit />) }
+          { protectedRoute('/rides/:id', <RideDetail />) }
+          { protectedRoute('/stats', <Stats />) }
+          { protectedRoute('/', <Home />) }
+          { protectedRoute('/add-to-list', <AddToList />) }
+          { protectedRoute('/create-list', <CreateList />) }
+          { protectedRoute('/profile', <Profile />) }
+          { protectedRoute('/park/:id', <ParkDetail />) }
+          { protectedRoute('/search', <Search />) }
+          { protectedRoute('/coaster/:id', <CoasterDetail />) }
+          <Route path="/info" element={<Info />} />
+          { protectedRoute('/')}
         </Routes>
         
         <CSSTransition

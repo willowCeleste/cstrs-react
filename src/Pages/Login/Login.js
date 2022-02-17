@@ -3,16 +3,21 @@ import { useState, useContext, useEffect } from "react";
 import Title from "../../Components/Title/Title";
 import Button from "../../Components/Button/Button";
 import { UserContext } from "../../Context/UserContext";
+import { useDispatch } from 'react-redux';
+import { userActions } from "../../store/user";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError]= useState(false);
+  const [error, setError] = useState(false);
   const [userContext, setUserContext] = useContext(UserContext);
 
   const submitHandler = async e => {
     e.preventDefault();
+    console.log('login');
+    
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
         method: 'POST',
@@ -28,10 +33,16 @@ const Login = () => {
         setError(true);
       } else {
         const data = await response.json();
+
+        dispatch(userActions.login({
+          token: data.token,
+          isLoggedIn: !!data.token,
+          username: data.user.username
+        }));
         setUserContext(prev => {
           return {...prev, token: data.token, user: data.user}
         });
-        navigate('/');
+        navigate('/', { replace: true });
       }
     } catch (e) {
       console.log(e);

@@ -1,11 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../../Context/UserContext";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from "../../store/ui";
 import './Navigation.css';
 
 const Navigation = () => {
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const [userContext, setUserContext] = useContext(UserContext);
   const dispatch = useDispatch();
   const logoutHandler = async () => {
@@ -48,6 +49,7 @@ const Navigation = () => {
 
   return (
     <nav className="c-navigation">
+      { console.log('is logged in', isLoggedIn) }
       <ul className="c-navigation__list">
         <li className="c-navigation__list-item"><NavLink className="c-navigation__link" to="/" onClick={dismissNav}>Home</NavLink></li>
         <li className="c-navigation__list-item"><NavLink className="c-navigation__link" to="/rides" onClick={dismissNav}>Rides</NavLink></li>

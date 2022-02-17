@@ -15,6 +15,7 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const showLoading = useSelector(state => state.ui.showLoading);
+  const username = useSelector(state => state.user.username);
   const [userContext] = useContext(UserContext);
   const [recentRides, setRecentRides] = useState([]);
   const [stats, setStats] = useState(null);
@@ -76,10 +77,10 @@ const Home = () => {
   };
  
   return <div className="c-home">
-    { console.log('LOADING', showLoading) }
     { showLoading && <Loading /> }
     <Link to="/addRide"><button className="o-button__quick-add o-button--round">+</button></Link>
     <section>
+      <p>Hello, {username}</p>
       <Title text="Recent Rides"/>
       {renderRecentRides()}
     </section>

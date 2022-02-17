@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import RideCard from "../../Components/RideCard/RideCard";
 
 const Search = () => {
-  const dispatch = useDispatch();
   const { sendRequest: suggestions, status, data: loadedSuggestions, error } = useHttp(getSearchSuggestions);
   const onInputChange = async e => {
     const value = e.target.value;
