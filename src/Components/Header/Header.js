@@ -1,6 +1,6 @@
 import { useState } from "react";
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -55,9 +55,11 @@ const Header = props => {
         </div>
       </CSSTransition>
       {!showSearch && (
-        <span className="c-header__search-toggle" onClick={toggleSearch}>
-          <MagnifyingGlass />
-        </span>
+        <Link to="/search" className="c-header__search-toggle">
+          <span>
+            <MagnifyingGlass />
+          </span>
+        </Link>
       ) }
     </div>
   </header>

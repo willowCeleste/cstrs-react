@@ -1,29 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useHttp from "../../hooks/use-http";
 import { getSearchSuggestions } from "../../lib/cms";
+import { getFullSearch } from "../../lib/cms";
+import { Navigate } from "react-router";
 import "./Search.css";
 import MagnifyingGlass from "../SVGs/MagnifyingGlass";
 
 const Search = props => {
-  const { sendRequest, status, data: loadedSuggestions, error } = useHttp(getSearchSuggestions, true);
+  const { sendRequest: suggestions, status: suggestionsStatus, data: loadedSuggestions, error: suggestionsError } = useHttp(getSearchSuggestions, true);
+  const { sendRequest: search, status: searchStatus, data: searchResults, error: searchError } = useHttp(getFullSearch, true)
   const [searchTerm, setSearchTerm] = useState('');
   // const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
 
   const onSearchSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const result = await fetch(`${process.env.REACT_APP_CMS_URL}/api/v1/coaster?search=${searchTerm}`);
-      const data = await result.json();
-      navigate('/search', {state: {
-        results: data.results,
-        searchTerm: searchTerm
-      }});
-      setSearchTerm('');
-    } catch (e) {
-      console.log(e);
+    if (searchTerm) {
+      const res = await search(searchTerm);
+      console.log('res in function', res);
     }
+
+    // useEffect - redirect to results page
+    // try {
+    //   const result = await fetch(`${process.env.REACT_APP_CMS_URL}/api/v1/coaster?search=${searchTerm}`);
+    //   const data = await result.json();
+    //   navigate('/search', {state: {
+    //     results: data.results,
+    //     searchTerm: searchTerm
+    //   }});
+    //   setSearchTerm('');
+    // } catch (e) {
+    //   console.log(e);
+    // }
   };
 
   const onInputChange = async e => {
@@ -31,17 +40,9 @@ const Search = props => {
     setSearchTerm(value);
     if (props.showSuggestions) {
       if (value.length >=3) {
-        // try {
-        //   const response = await fetch(`${process.env.REACT_APP_CMS_URL}/api/v1/search/suggestion?s=${value}${props.type ? `&type=${props.type}` : ''}`);
-        //   const data = await response.json();
-        //   setSuggestions(data.length ? data : [{ title: 'No suggestions :(', _id: 'none'}])
-        // } catch (e) {
-        //   console.log(e);
-        // }
-        const results = await sendRequest(value);
-        console.log('results!', results);
+        await suggestions(value);
       } else {
-        // setSuggestions([]);
+        // loadedSuggestions = [];
       }
     }
   };
@@ -68,6 +69,8 @@ const Search = props => {
 
   return (
     <div className={`c-search__wrapper${props.variation === 'header' ? ' c-search__wrapper--header' : ''}`}>
+      { searchResults && <Navigate to='/info' /> }
+      { console.log('res in template', searchResults) }
       <form className="c-search" action="" onSubmit={onSearchSubmit}>
         <input 
           className="c-search__text-input"

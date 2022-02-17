@@ -1,14 +1,24 @@
 // const FIREBASE_DOMAIN = 'https://react-prep-default-rtdb.firebaseio.com';
 
 export async function getSearchSuggestions(searchTerm) {
-  console.log('in cms.js file', searchTerm)
   const res = await fetch(`${process.env.REACT_APP_CMS_URL}/api/v1/search/suggestion?s=${searchTerm}`);
   const data = await res.json();
 
   if (!res.ok) {
     throw new Error(data.message || 'Could not get suggestions');
   }
-  console.log(data);
+  return data;
+}
+
+export async function getFullSearch(searchTerm) {
+  console.log('in search function', searchTerm);
+  const res = await fetch(`${process.env.REACT_APP_CMS_URL}/api/v1/coaster?search=${searchTerm}`);
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || 'Could not get search results');
+  }
+  console.log(data)
   return data;
 }
 

@@ -7,6 +7,7 @@ import Header from './Components/Header/Header';
 import Home from './Pages/Home';
 import Rides from './Pages/Rides';
 import CoasterDetail from './Pages/CoasterDetail';
+import Search from './Pages/Search/Search';
 import SearchResults from './Pages/SearchResults';
 import Lists from './Pages/Lists';
 import AddRide from './Pages/AddRide/AddRide';
@@ -81,10 +82,10 @@ function App() {
       path: 'credits',
       element: <Credits />
     },
-    {
-      path: 'search',
-      element: <SearchResults />
-    },
+    // {
+    //   path: 'search',
+    //   element: <SearchResults />
+    // },
     {
       path: 'lists',
       element: <Lists />
@@ -128,6 +129,10 @@ function App() {
     {
       path: '/park/:id',
       element: <ParkDetail />
+    },
+    {
+      path: '/search',
+      element: <Search />
     },
     {
       path: '/',
