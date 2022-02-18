@@ -1,8 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useContext, useEffect } from "react";
+import { useState } from "react";
 import Title from "../../Components/Title/Title";
 import Button from "../../Components/Button/Button";
-import { UserContext } from "../../Context/UserContext";
 import { useDispatch } from 'react-redux';
 import { userActions } from "../../store/user";
 
@@ -12,7 +11,6 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
-  const [userContext, setUserContext] = useContext(UserContext);
 
   const submitHandler = async e => {
     e.preventDefault();
@@ -39,21 +37,15 @@ const Login = () => {
           isLoggedIn: !!data.token,
           username: data.user.username
         }));
-        setUserContext(prev => {
-          return {...prev, token: data.token, user: data.user}
-        });
+        // setUserContext(prev => {
+        //   return {...prev, token: data.token, user: data.user}
+        // });
         navigate('/', { replace: true });
       }
     } catch (e) {
       console.log(e);
     }
   }
-
-  useEffect(() => {
-    if (userContext.token) {
-      navigate('/');
-    }
-  });
 
   return (
     <div>

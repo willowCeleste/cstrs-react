@@ -1,7 +1,6 @@
-import { useState, useEffect, useCallback, useContext } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../Context/UserContext';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { uiActions } from '../store/ui';
@@ -16,12 +15,12 @@ const Home = () => {
   const dispatch = useDispatch();
   const showLoading = useSelector(state => state.ui.showLoading);
   const username = useSelector(state => state.user.username);
-  const [userContext] = useContext(UserContext);
+  const token = useSelector(state => state.user.token );
   const [recentRides, setRecentRides] = useState([]);
   const [stats, setStats] = useState(null);
 
   const fetchUserHandler = useCallback(async () => {
-    if (userContext.token) {
+    if (token) {
       dispatch(uiActions.showLoading());
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/home`, {
@@ -29,7 +28,7 @@ const Home = () => {
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${userContext.token}`
+            Authorization: `Bearer ${token}`
           }
         });
         if (!response.ok) {
@@ -44,14 +43,11 @@ const Home = () => {
       }
       dispatch(uiActions.hideLoading());
     }
-  }, [userContext.token, dispatch]);
+  }, [token, dispatch]);
 
   useEffect(() => {
-    if (!userContext.token) {
-      navigate('/login');
-    }
     fetchUserHandler();
-  }, [fetchUserHandler, navigate, userContext.token]);
+  }, [fetchUserHandler, navigate]);
 
   const mappedRides = recentRides.map(ride => {
     const attrs = {

@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback, useContext } from 'react';
 import { UserContext } from '../../Context/UserContext';
+import { useSelector } from 'react-redux';
 import Title from '../../Components/Title/Title';
 import Button from '../../Components/Button/Button';
 import './Profile.css';
 
 const Profile = props => {
+  const token = useSelector(state => state.user.token);
   const [userContext, setUserContext] = useContext(UserContext);
   const [profile, setProfile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -16,7 +18,7 @@ const Profile = props => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
+          Authorization: `Bearer ${token}`
         }
       });
       if (!response.ok) {
@@ -27,7 +29,7 @@ const Profile = props => {
     } catch (e) {
       console.log(e);
     }
-  }, [userContext.token]);
+  }, [token]);
 
   useEffect(() => {
     fetchProfileHandler();
@@ -65,7 +67,7 @@ const Profile = props => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(profile)
       });

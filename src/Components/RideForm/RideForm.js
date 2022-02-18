@@ -1,9 +1,9 @@
-import { useState, useContext } from "react";
-import { UserContext } from "../../Context/UserContext";
+import { useState } from "react";
+import { useSelector } from 'react-redux';
 import Button from "../Button/Button";
 
 const RideForm = props => {
-  const [userContext, setUserContext] = useContext(UserContext);
+  const token = useSelector(state => state.user.token );
   const [ride, setRide] = useState(props.ride);
   
   const dateChangeHandler = e => {
@@ -34,7 +34,7 @@ const RideForm = props => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(ride)
       });

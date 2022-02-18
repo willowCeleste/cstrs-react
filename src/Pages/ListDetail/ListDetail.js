@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext";
 import { CSSTransition } from "react-transition-group";
 import { TransitionGroup } from "react-transition-group";
+import { useSelector } from 'react-redux';
 import Title from "../../Components/Title/Title";
 import ListCard from "../../Components/ListCard/ListCard";
 import Button from "../../Components/Button/Button";
@@ -19,6 +20,7 @@ const ListDetail = props => {
   const [userContext, setUserContext] = useContext(UserContext);
   const location = useLocation();
   const [originalList, setOriginalList] = useState(null);
+  const token = useSelector(state => state.user.token );
   const [list, setList] = useState(null);
   const [edit, setEdit] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
@@ -30,7 +32,7 @@ const ListDetail = props => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
+          Authorization: `Bearer ${token}`
         }
       });
       if (!response.ok) {
@@ -43,7 +45,7 @@ const ListDetail = props => {
     } catch(e) {
       console.log(e);
     }
-  }, [location.state, userContext.token]);
+  }, [location.state, token]);
 
   const renderItems = itemsArray => {
     itemsArray.sort(sortByRank);
@@ -143,7 +145,7 @@ const ListDetail = props => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(list)
       });
@@ -167,7 +169,7 @@ const ListDetail = props => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
+          Authorization: `Bearer ${token}`
         }
       });
       if (!response.ok) {
@@ -212,7 +214,7 @@ const ListDetail = props => {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${userContext.token}`
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(newItem)
     });

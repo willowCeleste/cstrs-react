@@ -17,6 +17,11 @@ const userSlice = createSlice({
       state.token = '';
       state.isLoggedIn = false;
       state.username = ''
+    },
+    verify(state, action) {
+      state.token = action.payload.token;
+      state.isLoggedIn = action.payload.isLoggedIn;
+      state.username = action.payload.username;
     }
   }
 });

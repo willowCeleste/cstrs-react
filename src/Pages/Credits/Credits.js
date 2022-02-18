@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useContext } from "react";
 import { UserContext } from "../../Context/UserContext";
+import { useSelector } from 'react-redux';
 import RideCard from '../../Components/RideCard/RideCard';
 import ProgressBar from "../../Components/ProgressBar/ProgressBar";
 import Loading from "../../Components/Loading/Loading";
@@ -8,6 +9,7 @@ import Pager from "../../Components/Pager/Pager";
 import "./Credits.css";
 
 const Credits = () => {
+  const token = useSelector(state => state.user.token );
   const [userContext, setUserContext] = useContext(UserContext);
   const [credits, setCredits] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,7 +38,7 @@ const Credits = () => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
+          Authorization: `Bearer ${token}`
         }
       });
       if (!response.ok) {
@@ -52,7 +54,7 @@ const Credits = () => {
       console.log(e);
     }
     setLoading(false);
-  }, [userContext.token]);
+  }, [token]);
 
   const renderCredits = () => {
     if (credits.length) {

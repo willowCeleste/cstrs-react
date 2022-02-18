@@ -3,6 +3,7 @@ import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { uiActions } from "../../store/ui";
+import { useSelector } from 'react-redux';
 import "./AddRide.css";
 import { UserContext } from "../../Context/UserContext";
 import Title from "../../Components/Title/Title";
@@ -14,7 +15,7 @@ const AddRide = props => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  const [userContext, setUserContext] = useContext(UserContext);
+  const token = useSelector(state => state.user.token );
   const [user, setUser] = useState(null);
   const today = new Date().toISOString().split('T')[0];
   const [ride, setRide] = useState({});
@@ -29,7 +30,7 @@ const AddRide = props => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
+          Authorization: `Bearer ${token}`
         }
       });
       if (!response.ok) {
@@ -40,7 +41,7 @@ const AddRide = props => {
     } catch(e) {
       console.log(e);
     }
-  }, [userContext.token]);
+  }, [token]);
 
   useEffect(() => {
     fetchDataHandler();
@@ -68,7 +69,7 @@ const AddRide = props => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(ride)
       });

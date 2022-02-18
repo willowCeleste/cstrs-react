@@ -1,9 +1,11 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { UserContext } from './Context/UserContext'
 import { CSSTransition } from 'react-transition-group';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
+import { userActions } from './store/user';
 import Header from './Components/Header/Header';
 import Home from './Pages/Home';
 import Rides from './Pages/Rides';
@@ -27,51 +29,58 @@ import ParkDetail from './Pages/ParkDetail/ParkDetail';
 import Alert from './Components/Alert/Alert';
 import Welcome from './Pages/Welcome/Welcome';
 import './App.css';
-import Edit from './Components/SVGs/Edit';
 
 function App() {
+  const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const showAlert = useSelector(state => state.ui.showAlert);
   const alertContent = useSelector(state => state.ui.alertContent);
   const [userContext, setUserContext] = useContext(UserContext);
   const [notification, setNotification] = useState('');
   const verifyUser = useCallback(async () => {
+    console.log('verify ----');
     try {
-      fetch(`${process.env.REACT_APP_API_URL}/refreshToken`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/refreshToken`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-      }).then(async response => {
-        if (response.ok) {
-          const data = await response.json();
-          setUserContext(oldValues => {
-            return { ...oldValues, token: data.token, user: data.user }
-          });
-        } else {
-          setUserContext(oldValues => {
-            return { ...oldValues, token: null }
-          });
-        }
-        // renew the auth token every 5 mins
-        setTimeout(verifyUser, 5 * 60 * 1000);
-      })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+
+        dispatch(userActions.verify({
+          token: data.token,
+          isLoggedIn: !!data.token,
+          username: data.user.username
+        }))
+      } else {
+        dispatch(userActions.verify({
+          token: '',
+          isLoggedIn: false,
+          username: ''
+        }));
+      }
+      setTimeout(verifyUser, 5 * 60 * 1000);
     } catch (e) {
       console.log(e);
       throw new Error('Something went wrong');
     }
-  }, [setUserContext]);
+  }, [dispatch]);
 
   useEffect(() => {
     verifyUser();
   }, [verifyUser]);
 
   const protectedRoute = (path, component) => {
+    console.log('is logged in protected route', isLoggedIn);
     return <Route path={path} element={ isLoggedIn ? component : <Navigate to="/welcome" /> }/>;
   };
 
   return (
     <div className="c-app">
-      <Header showToggle={userContext.token !== null } user={userContext.user} />
+      { console.log('IS LOGGED IN', isLoggedIn) }
+      <Header showToggle={ isLoggedIn } user={userContext.user} />
       <div className="c-app__content">
         {/* ---- Routes ---- */}
         <Routes>
@@ -83,7 +92,7 @@ function App() {
           { protectedRoute('/lists', <Lists />) }
           { protectedRoute('/list-detail', <ListDetail />) }
           { protectedRoute('/addRide', <AddRide />) }
-          { protectedRoute('/edit-ride', <Edit />) }
+          { protectedRoute('/edit-ride', <EditRide />) }
           { protectedRoute('/rides/:id', <RideDetail />) }
           { protectedRoute('/stats', <Stats />) }
           { protectedRoute('/', <Home />) }

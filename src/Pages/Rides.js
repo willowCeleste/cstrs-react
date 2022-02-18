@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import { UserContext } from '../Context/UserContext';
 import { uiActions } from '../store/ui';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ListSwipeAction from '../Components/ListSwipeAction/ListSwipeAction';
 import RideCard from '../Components/RideCard/RideCard';
 import ConfirmAlert from '../Components/ConfirmAlert/ConfirmAlert';
@@ -20,7 +20,7 @@ dayjs.extend(utc);
 const Rides = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [userContext, setUserContext] = useContext(UserContext);
+  const token = useSelector(state => state.user.token);
   const [rides, setRides] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -29,7 +29,7 @@ const Rides = () => {
   const [alertContent, setAlertContent] = useState('');
   
   const fetchRidesHandler = useCallback(async page => {
-    if (userContext.token) {
+    if (token) {
       dispatch(uiActions.showLoading());
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/pages/rides?limit=10&page=${page}`, {
@@ -37,7 +37,7 @@ const Rides = () => {
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${userContext.token}`
+            Authorization: `Bearer ${token}`
           }
         });
         if (!response.ok) {
@@ -54,7 +54,7 @@ const Rides = () => {
       }
       dispatch(uiActions.hideLoading())
     }
-  }, [dispatch, userContext.token]);
+  }, [dispatch, token]);
 
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const Rides = () => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
+          Authorization: `Bearer ${token}`
         }
       });
       if (result.ok) {

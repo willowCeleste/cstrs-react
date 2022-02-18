@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useState, useContext } from "react";
-import { UserContext } from "../Context/UserContext";
+import { useCallback, useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import Title from "./Title/Title";
 import RideList from "./RideList/RideList";
 import StatCard from "./StatCard/StatCard";
 import './Stats.css';
 
 const Stats = props => { 
-  const [userContext, setUserContext] = useContext(UserContext);
+  const token = useSelector(state => state.user.token );
   const [stats, setStats] = useState(null);
 
   const fetchStatsHandler = useCallback(async () => {
@@ -16,7 +16,7 @@ const Stats = props => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userContext.token}`
+          Authorization: `Bearer ${token}`
         }
       });
       if (!response.ok) {
@@ -27,7 +27,7 @@ const Stats = props => {
     } catch (e) {
       console.log(e);
     }
-  }, [userContext.token]);
+  }, [token]);
 
   const formatAvg = number => {
     if (number % 1 === 0) {

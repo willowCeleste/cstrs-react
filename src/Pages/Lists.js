@@ -1,12 +1,12 @@
-import { useState, useEffect, useCallback, useContext } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { UserContext } from "../Context/UserContext";
+import { useSelector } from 'react-redux';
 import Title from "../Components/Title/Title";
 import Loading from "../Components/Loading/Loading";
 import "./Lists.css";
 
 const Lists = () => {
-  const [userContext, setUserContext] = useContext(UserContext);
+  const token = useSelector(state => state.user.token );
   const [loading, setLoading] = useState(true);
   const [lists, setLists] = useState([]);
 
@@ -16,7 +16,7 @@ const Lists = () => {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${userContext.token}`
+        Authorization: `Bearer ${token}`
       }
     });
 
@@ -26,7 +26,7 @@ const Lists = () => {
     const data = await response.json();
     setLists(data.data);
     setLoading(false);
-  }, [userContext.token]);
+  }, [token]);
 
   useEffect(() => {
     fetchListsHandler();

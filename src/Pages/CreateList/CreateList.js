@@ -1,7 +1,7 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../Context/UserContext";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { useSelector } from 'react-redux';
 import Title from "../../Components/Title/Title";
 import Search from "../../Components/Search/Search";
 import ListCard from "../../Components/ListCard/ListCard";
@@ -9,7 +9,7 @@ import "./CreateList.css";
 
 const CreateList  = () => {
   const navigate = useNavigate();
-  const [userContext, setUserContext] = useContext(UserContext);
+  const token = useSelector(state => state.user.token );
   const [list, setList] = useState({
     title: '',
     itemType: 'coaster',
@@ -70,7 +70,7 @@ const CreateList  = () => {
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${userContext.token}`
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify(list)
         });

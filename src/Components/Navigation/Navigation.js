@@ -1,13 +1,12 @@
 import { Link, NavLink } from "react-router-dom";
-import { useContext } from "react";
-import { UserContext } from "../../Context/UserContext";
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from "../../store/ui";
+import { userActions } from "../../store/user";
 import './Navigation.css';
 
 const Navigation = () => {
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
-  const [userContext, setUserContext] = useContext(UserContext);
+  const token = useSelector(state => state.user.token);
   const dispatch = useDispatch();
   const logoutHandler = async () => {
     try {
@@ -15,29 +14,27 @@ const Navigation = () => {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${userContext.token}`,
+          Authorization: `Bearer ${token}`,
         }
       });
       if (!response.ok) {
         alert('Something went wrong');
         throw new Error('Something went wrong');
       }
-      setUserContext(prev => {
-        return {...prev, token: null}
-      });
+      dispatch(userActions.logout());
     } catch (e) {
       console.log(e);
     }
   };
 
   const renderProfileLink = () => {
-    return userContext.token 
+    return isLoggedIn
      ? <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/profile">Profile</Link></li>
      : ''
   }
   
   const renderLoginLogout = () => {
-    return userContext.token ? 
+    return isLoggedIn ? 
     <li className="c-navigation__list-item">
       <button className="c-navigation__link" onClick={logoutHandler}>Log Out</button>
     </li> : <li className="c-navigation__list-item"><Link className="c-navigation__link" to="/login">Log In</Link></li>
