@@ -1,6 +1,5 @@
 import { useLocation } from "react-router";
 import { useState, useCallback, useContext, useEffect } from "react";
-import { UserContext } from "../../Context/UserContext";
 import { useSelector } from 'react-redux';
 import Title from "../../Components/Title/Title"
 import Button from "../../Components/Button/Button";
@@ -9,7 +8,6 @@ import './AddToList.css';
 const AddToList = () => {
   const location = useLocation();
   const token = useSelector(state => state.user.token );
-  const [userContext, setUserContext] = useContext(UserContext);
   const [lists, setLists] = useState([]);
   const [listId, setListId] = useState('');
   const [item, setItem] = useState({

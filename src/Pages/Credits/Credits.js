@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback, useContext } from "react";
-import { UserContext } from "../../Context/UserContext";
 import { useSelector } from 'react-redux';
 import RideCard from '../../Components/RideCard/RideCard';
 import ProgressBar from "../../Components/ProgressBar/ProgressBar";
@@ -10,7 +9,6 @@ import "./Credits.css";
 
 const Credits = () => {
   const token = useSelector(state => state.user.token );
-  const [userContext, setUserContext] = useContext(UserContext);
   const [credits, setCredits] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);

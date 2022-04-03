@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, Navigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../store/ui';
 import RideList from '../Components/RideList/RideList';
 import RideCard from '../Components/RideCard/RideCard';
@@ -10,14 +9,17 @@ import Title from '../Components/Title/Title';
 import Loading from '../Components/Loading/Loading';
 import Stat from '../Components/Stat/Stat';
 
-const Home = () => {
+const Home = props => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const showLoading = useSelector(state => state.ui.showLoading);
   const username = useSelector(state => state.user.username);
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
   const token = useSelector(state => state.user.token );
   const [recentRides, setRecentRides] = useState([]);
   const [stats, setStats] = useState(null);
+
+  console.log('protected, isLoggedIn', props.protected, isLoggedIn);
 
   const fetchUserHandler = useCallback(async () => {
     if (token) {
@@ -71,12 +73,15 @@ const Home = () => {
   const renderRecentRides = () => {
     return recentRides.length ? <RideList items={mappedRides} /> : <div>You haven't added any rides yet!</div>;
   };
+
+  if (!isLoggedIn) {
+    return <Navigate to="/welcome" />;
+  }
  
   return <div className="c-home">
     { showLoading && <Loading /> }
     <Link to="/addRide"><button className="o-button__quick-add o-button--round">+</button></Link>
     <section>
-      <p>Hello, {username}</p>
       <Title text="Recent Rides"/>
       {renderRecentRides()}
     </section>

@@ -1,5 +1,4 @@
-import { useState, useEffect, useCallback, useContext } from 'react';
-import { UserContext } from '../../Context/UserContext';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import Title from '../../Components/Title/Title';
 import Button from '../../Components/Button/Button';
@@ -7,7 +6,6 @@ import './Profile.css';
 
 const Profile = props => {
   const token = useSelector(state => state.user.token);
-  const [userContext, setUserContext] = useContext(UserContext);
   const [profile, setProfile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 

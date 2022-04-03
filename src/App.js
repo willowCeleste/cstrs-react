@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { UserContext } from './Context/UserContext'
+import { useCallback, useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
@@ -32,19 +31,20 @@ import './App.css';
 
 function App() {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  // const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+  const isLoggedIn = !!localStorage.getItem('cstrsToken');
   const showAlert = useSelector(state => state.ui.showAlert);
   const alertContent = useSelector(state => state.ui.alertContent);
-  const [userContext, setUserContext] = useContext(UserContext);
   const [notification, setNotification] = useState('');
+  console.log('is logged innnn', isLoggedIn);
   const verifyUser = useCallback(async () => {
-    console.log('verify ----');
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/refreshToken`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
       });
+      console.log(response);
 
       if (response.ok) {
         const data = await response.json();
@@ -55,13 +55,14 @@ function App() {
           username: data.user.username
         }))
       } else {
+        console.log('in verify');
         dispatch(userActions.verify({
           token: '',
           isLoggedIn: false,
           username: ''
         }));
       }
-      setTimeout(verifyUser, 5 * 60 * 1000);
+      // setTimeout(verifyUser, 5 * 60 * 1000);
     } catch (e) {
       console.log(e);
       throw new Error('Something went wrong');
@@ -73,19 +74,19 @@ function App() {
   }, [verifyUser]);
 
   const protectedRoute = (path, component) => {
-    console.log('is logged in protected route', isLoggedIn);
+    console.log('inside', isLoggedIn);
     return <Route path={path} element={ isLoggedIn ? component : <Navigate to="/welcome" /> }/>;
   };
 
   return (
     <div className="c-app">
-      { console.log('IS LOGGED IN', isLoggedIn) }
-      <Header showToggle={ isLoggedIn } user={userContext.user} />
+      <Header showToggle={ isLoggedIn } user={{}} />
       <div className="c-app__content">
         {/* ---- Routes ---- */}
         <Routes>
           <Route path="/welcome" element={<Welcome />} />
-          { !isLoggedIn && <Route path="/login" element={<Login />} /> }
+          {/* { !isLoggedIn && <Route path="/login" element={<Login />} /> } */}
+          <Route path="/login" element={<Login />} />
           { !isLoggedIn && <Route path="/sign-up" element={<Register />} /> }
           { protectedRoute('/rides', <Rides />) }
           { protectedRoute('/credits', <Credits />) }
@@ -95,7 +96,6 @@ function App() {
           { protectedRoute('/edit-ride', <EditRide />) }
           { protectedRoute('/rides/:id', <RideDetail />) }
           { protectedRoute('/stats', <Stats />) }
-          { protectedRoute('/', <Home />) }
           { protectedRoute('/add-to-list', <AddToList />) }
           { protectedRoute('/create-list', <CreateList />) }
           { protectedRoute('/profile', <Profile />) }
@@ -103,7 +103,8 @@ function App() {
           { protectedRoute('/search', <Search />) }
           { protectedRoute('/coaster/:id', <CoasterDetail />) }
           <Route path="/info" element={<Info />} />
-          { protectedRoute('/')}
+          <Route path="/" element={<Home />} />
+          {/* { protectedRoute('/', <Home protected />) } */}
         </Routes>
         
         <CSSTransition

@@ -9,8 +9,9 @@ const userSlice = createSlice({
   },
   reducers: {
     login(state, action) {
+      console.log(action.payload);
       state.token = action.payload.token;
-      state.isLoggedIn = action.payload.isLoggedIn;
+      state.isLoggedIn = true;
       state.username = action.payload.username;
     },
     logout(state) {
@@ -20,7 +21,7 @@ const userSlice = createSlice({
     },
     verify(state, action) {
       state.token = action.payload.token;
-      state.isLoggedIn = action.payload.isLoggedIn;
+      state.isLoggedIn = true;
       state.username = action.payload.username;
     }
   }

@@ -1,16 +1,17 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
-import { UserContext } from "../../Context/UserContext";
+import { useState } from "react";
+import { userActions } from "../../store/user";
+import { useSelector, useDispatch } from 'react-redux';
 import Title from "../../Components/Title/Title";
 import Button from "../../Components/Button/Button";
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [userContext, setUserContext] = useContext(UserContext);
 
   const emailChangeHandler = e => {
     setEmail(e.target.value);
@@ -49,9 +50,12 @@ const Register = () => {
         throw new Error('Something went wrong');
       }
       const data = await response.json();
-      setUserContext(prev => {
-        return {...prev, token: data.token}
-      });
+      dispatch(userActions.login({
+        token: data.token
+      }));
+      // setUserContext(prev => {
+      //   return {...prev, token: data.token}
+      // });
       navigate('/');
     } catch (e) {
       console.error(e);

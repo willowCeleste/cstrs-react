@@ -1,7 +1,6 @@
 import { useLocation } from "react-router";
-import { useState, useEffect, useCallback, useContext } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../Context/UserContext";
 import { CSSTransition } from "react-transition-group";
 import { TransitionGroup } from "react-transition-group";
 import { useSelector } from 'react-redux';
@@ -17,7 +16,6 @@ import './ListDetail.css';
 
 const ListDetail = props => {
   const navigate = useNavigate();
-  const [userContext, setUserContext] = useContext(UserContext);
   const location = useLocation();
   const [originalList, setOriginalList] = useState(null);
   const token = useSelector(state => state.user.token );

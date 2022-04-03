@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import { uiActions } from "../../store/ui";
 import { useSelector } from 'react-redux';
 import "./AddRide.css";
-import { UserContext } from "../../Context/UserContext";
 import Title from "../../Components/Title/Title";
 import Button from "../../Components/Button/Button";
 import RideCard from "../../Components/RideCard/RideCard";

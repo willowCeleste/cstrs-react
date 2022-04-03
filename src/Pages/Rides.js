@@ -1,6 +1,5 @@
-import { useState, useEffect, useCallback, useContext } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from "react-router-dom";
-import { UserContext } from '../Context/UserContext';
 import { uiActions } from '../store/ui';
 import { useDispatch, useSelector } from 'react-redux';
 import ListSwipeAction from '../Components/ListSwipeAction/ListSwipeAction';

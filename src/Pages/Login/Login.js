@@ -37,9 +37,6 @@ const Login = () => {
           isLoggedIn: !!data.token,
           username: data.user.username
         }));
-        // setUserContext(prev => {
-        //   return {...prev, token: data.token, user: data.user}
-        // });
         navigate('/', { replace: true });
       }
     } catch (e) {
